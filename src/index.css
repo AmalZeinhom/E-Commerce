@@ -1,0 +1,742 @@
+:root {
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --mainColor: #00cc74;
+  --secondaryColor: rgb(1, 133, 76);
+  --textColor: rgb(107, 114, 128);
+  --lightBackground: #f0f3f2;
+  --orange: rgb(249, 115, 22);
+  --navyBlue: rgb(8, 47, 73);
+  --cart-bg: #F0F3F2;
+}
+body {
+  font-family: 'Open Sans Variable', sans-serif;
+}
+/* !=====================Navbar====================== */
+.custom-navbar {
+  background-color: var(--lightBackground);
+}
+
+.main-color {
+  color: var(--mainColor);
+}
+
+.second-color {
+  color: rgb(107, 114, 128);
+}
+
+.active {
+  color: var(--mainColor) !important;
+  font-weight: 900 !important;
+  font-size: 1rem !important;
+}
+
+.navbar-brand {
+  color: rgb(1, 133, 76) !important;
+  font-weight: 700 !important;
+  font-size: 1.5rem !important;
+}
+
+/* !=====================Footer====================== */
+.btn-bg {
+  background-color: var(--mainColor) !important;
+}
+
+.custom-input:focus {
+  border-color: var(--mainColor) !important;
+  box-shadow: 0 0 0 0.125rem rgba(8, 233, 60, 0.25) !important;
+}
+
+.custom-input::placeholder{
+  opacity: 0.5 !important;
+}
+
+/* !=====================Side Btn====================== */
+.scroll-to-top-btn {
+  position: fixed;
+  bottom: 1.875rem;
+  right: 1.875rem;
+  background-color: var(--mainColor);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 50%;
+  font-size: 1.125rem;
+  cursor: pointer;
+  z-index: 999;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  transition: 0.4s ease;
+  transform: scale(1);
+}
+
+.scroll-to-top-btn.show {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* !=====================Products====================== */
+.filter-btn:hover {
+  background-color: var(--mainColor) !important;
+  color: #f1f1f1 !important;
+  transform: scale(1.1);
+  transition: all 0.3s ease;
+}
+
+.product-container .col-md-3 {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.product-container .col-md-3:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0px 5px 15px rgba(0,0,0,0.1);
+}
+
+.pagination-btn {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background-color: #f1f1f1;
+  transition: all 0.3s ease;
+}
+.pagination-btn:hover {
+  background-color: var(--mainColor);
+  color: white;
+  transform: scale(1.1);
+}
+.pagination-btn.active {
+  background-color: var(--mainColor);
+  color: white;
+}
+
+
+/* !=====================Search Component====================== */
+.searchComponent {
+  background-color: var(--lightBackground);
+  border-bottom-left-radius: 40px;
+  border-bottom-right-radius: 40px;
+  position: fixed;
+  z-index: 9999;
+  top: 62px;
+  padding: 0.625rem;
+  margin: 0 auto;
+  left: 25%;
+}
+
+.back-icon{
+  border-color: var(--mainColor) !important;
+  color: var(--mainColor) !important;
+  transition: all 0.3s ease;
+}
+
+.back-icon:hover{
+background-color: var(--secondaryColor) !important;
+color: #f1f1f1 !important;
+transform: scale(1.1);
+transition: all 0.3 ease-in-out;
+}
+
+.search-container {
+  width: 50% !important;
+}
+
+.custom-search-input {
+  border-radius: 50px !important;
+  border: 1px solid #90c7b8 !important;
+  padding: 5px 10px !important;
+  font-size: 16px !important;
+  outline: none !important;
+  transition: 0.3s !important;
+  color: var(--secondaryColor) !important;
+}
+
+.custom-search-input::placeholder {
+  color: #b3b3b3 !important;
+}
+
+.custom-search-input:focus {
+  box-shadow: 0 0 0 0.125rem rgba(8, 233, 60, 0.25) !important;
+}
+
+.search-icon {
+  position: absolute !important;
+  right: 0.9375rem !important;
+  top: 50% !important;
+  transform: translateY(-50%);
+  color: #b3b3b3 !important;
+  cursor: pointer;
+}
+
+.backToHome {
+  background-color: var(--mainColor) !important;
+  border-radius: 50% !important;
+  color: white !important;
+}
+
+/* !=====================Side Bar====================== */
+.sideNavbar {
+  border-bottom-right-radius: 50px;
+  border-top-right-radius: 50px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  color: var(--secondaryColor);
+  padding: 20px;
+  width: 280px;
+  backdrop-filter: blur(8px);
+  transform: translateX(-100%);
+  transition: transform 0.4s ease-in-out;
+}
+
+.sideNavbar.open {
+  transform: translateX(0);
+}
+
+.form-check-label {
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  cursor: pointer;
+}
+
+.form-check-input:checked {
+  background-color: var(--secondaryColor) !important;
+  border-color: var(--secondaryColor) !important;
+}
+
+input[type="range"] {
+  width: 150px !important;
+}
+
+/* الخط اللي بيتحرك عليه السلايدر */
+input[type="range"]::-webkit-slider-runnable-track {
+  background: #e0e0e0 !important;
+  height: 15px !important;
+  border-radius: 20px !important;
+}
+
+/* الدائرة اللي بتتحرك */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  background: var(--mainColor);
+  border-radius: 50%;
+  cursor: pointer;
+  margin-top: 1px; /* لتوسيط الـ thumb */
+}
+
+.price-value {
+  font-size: 1.1rem;
+  background-color: #f1fdf7;
+  padding: 8px 16px;
+  border-radius: 10px;
+  display: inline-block;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  font-size: 1.125rem;
+  font-weight: 400;
+  color: var(--mainColor);
+}
+
+.reset-btn{
+  top: 5%;
+  right: 5%;
+  box-shadow: 10px 10px 10px rgba(1, 133, 76, 1);
+  transition: all 0.3s ease;
+}
+
+.reset-btn:hover{
+  transform: scale(1.1);
+  transition: all 0.3s ease-in-out;
+}
+
+
+/* !=====================Category====================== */
+.catCard {
+  border-radius: 1.25rem !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  width: 9.375rem;
+  height: 9.375rem;
+}
+
+.cat-Img {
+  border-radius: 1.25rem;
+  transform: scale(1);
+  transition: all 0.3s ease-in-out;
+}
+
+.cat-Img:hover {
+  transform: scale(1.05);
+}
+
+.catText {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--secondaryColor);
+}
+
+/* !=====================Card Design====================== */
+.card-design {
+  box-shadow: 0 2px 0px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.discount-badge {
+  content: "";
+  top: 0;
+  left: 0;
+  background-color: var(--secondaryColor);
+  position: absolute;
+  width: 3.75rem;
+  height: 3.75rem;
+  border-top-right-radius: 1.875rem;
+  border-bottom-right-radius: 1.875rem;
+  border-bottom-left-radius: 1.875rem;
+  color: var(--orange);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.discount-badge span {
+  color: var(--mainColor);
+}
+
+.card-title {
+  font-size: 1rem !important;
+  font-weight: 400 !important;
+  color: var(--mainColor) !important;
+  cursor: pointer !important;
+}
+
+.card-title:hover {
+  color: var(--orange) !important;
+}
+
+.card-category {
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  color: var(--secondaryColor) !important;
+}
+
+.card-brand {
+  font-size: 0.875rem !important;
+  font-weight: 400 !important;
+  color: var(--textColor) !important;
+}
+
+.card-price {
+  font-size: 1rem !important;
+  font-weight: 400 !important;
+  color: var(--mainColor);
+}
+
+.card-rate i {
+  font-size: 1rem !important;
+  font-weight: 900 !important;
+  color: rgb(255, 201, 8);
+}
+
+.card-rate {
+  font-size: 1rem !important;
+  font-weight: 400 !important;
+  color: var(--secondaryColor);
+}
+
+.layer{
+  top: 60%;
+  left: 20%;
+}
+
+.icon{
+  background-color: var(--mainColor);
+  opacity: 0;
+  border-radius: 50%;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  transform: translateY(-10px), scale(0.9)
+}
+
+.icon:hover{
+    background-color: var(--secondaryColor);
+    transform: scale(1.1);
+}
+
+.card-design:hover .icon{
+  opacity: 1;
+  transform: translateY(-20px);
+}
+
+.card-design:hover .icon:nth-child(1){
+  transition-delay: 0.1s;
+}
+.card-design:hover .icon:nth-child(2){
+  transition-delay: 0.2s;
+}
+.card-design:hover .icon:nth-child(3){
+  transition-delay: 0.3s;
+}
+/* !=====================Brand Design====================== */
+.circle-card {
+  border-radius: 50%;
+  width: 8.75rem;
+  height: 8.75rem;
+  transition: all 0.3s ease;
+}
+
+.circle-card:hover{
+  transform: scale(1.1);
+}
+
+
+/* !=====================Home Design====================== */
+.swiper-container {
+  width: 100%;
+  height: 500px;
+  overflow: hidden;
+  position: relative;
+}
+
+.mySwiper .swiper-slide {
+  width: 100% !important;
+  height: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: 1s;
+  user-select: none;
+}
+
+.swiper-container,
+.swiper-wrapper {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.mySwiper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.logo-brand {
+  border-radius: 1.875rem;
+  width: 14.375rem;
+  height: 3.125rem;
+  font-size: 1.875rem;
+  font-weight: 800;
+  color: var(--secondaryColor);
+  z-index: 2;
+}
+
+.quote {
+  border-radius: 1.875rem;
+  font-size: 1rem;
+  z-index: 2;
+}
+
+.started-btn {
+  border-radius: 1.875rem;
+  background-color: var(--mainColor);
+  padding: 0.625rem 1.25rem;
+  z-index: 2;
+}
+
+.shop-title {
+  position: relative;
+  color: var(--navyBlue);
+}
+
+.shop-title::after {
+  content: "";
+  width: 300px;
+  height: 4px;
+  background-color: var(--mainColor);
+  bottom: -20px;
+  left: 36%;
+  position: absolute;
+}
+
+.cat-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--secondaryColor);
+}
+
+.cat-name {
+  background-color: var(--lightBackground);
+  padding: 5px;
+  font-size: 14px;
+  color: var(--secondaryColor);
+  font-weight: 700;
+  border-radius: 10px;
+}
+
+/* !=====================Loading Screen====================== */
+.icon-wrapper {
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
+
+/* الأيقونة البيضاء الأساسية */
+.icon-base {
+  color: white;
+  font-size: 120px;
+  position: absolute;
+}
+
+/* الأيقونة اللي بتملي بلون */
+.icon-fill {
+  color: var(--mainColor);
+  font-size: 120px;
+  position: absolute;
+
+  /* mask لملئ تدريجي */
+  mask-image: linear-gradient(to right, black 50%, transparent 50%);
+  mask-size: 200% 100%;
+  mask-position: 100% 100%;
+  animation: fillAnim 1s linear infinite;
+
+  -webkit-mask-image: linear-gradient(to right, black 50%, transparent 50%);
+  -webkit-mask-size: 200% 100%;
+  -webkit-mask-position: 200% 0;
+}
+
+/* التحريك */
+@keyframes fillAnim {
+  0% {
+    mask-position: 200% 0;
+    -webkit-mask-position: 200% 0;
+  }
+  100% {
+    mask-position: 0% 0;
+    -webkit-mask-position: 0% 0;
+  }
+}
+
+/* !=====================Register Screen====================== */
+.registerTitle{
+  color: var(--mainColor);
+  font-weight: 700;
+  font-size: 1.875rem;
+}
+
+.register-btn{
+  background-color: var(--mainColor);  
+}
+
+.msg{
+  font-size: .875rem;
+  opacity: 0.8;
+}
+
+.register-card{
+  margin-top: 50px;
+  border-radius: 30px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* !=====================Login Screen====================== */
+.nav-login{
+  font-size: 12px !important;
+  color: var(--mainColor);
+  text-decoration: none;
+  border-radius: 1.25rem;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  margin: auto;
+  padding: 3px 7px;
+  transition: all 0.3s ease-in-out;
+}
+
+.nav-login:hover{
+  transform: translateY(-3px);
+}
+
+.eye-pass{
+  top: 20px;
+  color: var(--textColor);
+  opacity: 60%;
+}
+/* !=================Forgot Password Screen================= */
+.resetEmail{
+  font-size: .875rem;
+  color: var(--secondaryColor);
+  font-weight: 400;
+}
+
+/* !=================Product Details Screen================= */
+.specific-title{
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--secondaryColor);
+}
+
+.specific-text{
+  font-size: .875rem;
+  font-weight: 600;
+  color: var(--mainColor);
+}
+
+.specific-brand{
+  font-size: .875rem;
+  font-weight: 500;
+  color: var(--textColor);
+}
+
+.specific-price{
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--textColor);
+}
+
+.specific-discount{
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--mainColor);
+}
+
+.list .btn-add {
+  background-color: var(--secondaryColor) ;
+  transition: all 0.3s ease;
+}
+
+.list .btn-fav{
+  background-color: var(--secondaryColor) ;
+  transition: all 0.3s ease;
+}
+
+.list .btn-add:hover{
+  background-color: var(--mainColor);
+}
+
+.list .btn-fav:hover{
+  background-color: var(--mainColor);
+}
+
+/* !=================Cart Screen================= */
+.cart-bg{
+  background-color: var(--cart-bg);
+  box-shadow: 0px 0px 10px rgba(1, 133, 76, 0.6);
+
+}
+
+.check-out{
+  border: 2px solid var(--secondaryColor) !important;
+  color: var(--mainColor) !important;
+  padding: 5px 20px !important;
+  background-color: white !important;
+  transition: all 0.3s ease;
+}
+
+.check-out:hover{
+  background-color: var(--secondaryColor) !important;
+  color: white !important;
+}
+
+.quantity{
+  cursor: pointer;
+}
+
+.checked-out::before{
+  content: '';
+  width: 200px;
+  border: 1px solid var(--secondaryColor); 
+  top: 0;
+  left: 41%;
+  position: absolute;
+}
+.checked-out::after{
+  content: '';
+  width: 200px;
+  border: 1px solid var(--secondaryColor);
+  left: 41%;
+  bottom: 0;
+  position: absolute;
+}
+
+.animated-button {
+  background-color: #00cc74;
+  border: none;
+  color: white;
+  font-weight: 500;
+  border-radius: 8px;
+  padding: 8px 16px;
+  transition: all 0.3s ease-in-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.animated-button:hover {
+  background-color: #01975a;
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(0, 204, 116, 0.5);
+}
+
+
+/* !=================Check Out Screen================= */
+.online-order{
+  transition: all 0.3s ease;
+  color: var(--secondaryColor);
+  background-color: #fff;
+}
+
+.online-order:hover{
+  background-color: var(--mainColor);
+  color: white;
+}
+
+.check-layout{
+width: 40%;  
+border-radius: 20px;
+padding: 20px;
+box-shadow: 5px 5px 20px rgba(1, 133, 76, 0.5);
+
+}
+/* !================Pagenation Screen================= */
+.pagination-btn {
+  background-color: #fff;
+  border: 2px solid #198754; /* Bootstrap green */
+  color: #198754;
+  font-weight: bold;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.5s ease forwards;
+}
+
+.pagination-btn:hover {
+  transform: scale(1.15) rotate(3deg);
+  background-color: #198754;
+  color: #fff;
+}
+
+.pagination-btn.active {
+  background-color: #198754;
+  color: #fff;
+  transform: scale(1.15);
+  border-color: #198754;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
