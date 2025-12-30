@@ -15,7 +15,7 @@ import SubBrands from "../src/SubPages/SubBrands.jsx";
 import SignUp from "./Pages/SignUp.jsx";
 import { Toaster } from "react-hot-toast";
 import Forgetpassword from "./SubPages/Forgetpassword.jsx";
-import ResetPassword from "./SubPages/ResetPAssword.jsx";
+import ResetPassword from "./SubPages/ResetPassword.jsx";
 import VerifyOTP from "./SubPages/VerifyOTP.jsx";
 import Cart from "./Pages/Cart.jsx";
 import ProtectedRoutes from "./Protected/ProtectedRoutes.jsx";
