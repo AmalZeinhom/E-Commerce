@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import axios from "axios";
 import { useFormik } from "formik";
 import { object, ref, string } from "yup";
@@ -8,7 +7,9 @@ import toast from "react-hot-toast";
 import { NavLink, useNavigate } from "react-router-dom";
 
 export default function SignUp() {
-  const passwordRegex = /^[A-Z][a-z,0-9]{5,}$/;
+  const passwordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
   const phoneRegex = /^01[0125][0-9]{8}$/;
   const navigate = useNavigate();
 
@@ -22,8 +23,9 @@ export default function SignUp() {
       .required("Password is Requird")
       .matches(
         passwordRegex,
-        "Password Must Start With Capital Letter Followed by 5 or More Characters"
+        "Password must have at least 8 characters, including an uppercase letter, a lowercase letter, a number, and a special character."
       ),
+
     rePassword: string()
       .required("RePassword is Requird")
       .matches(passwordRegex)
@@ -34,23 +36,24 @@ export default function SignUp() {
   });
 
   async function sendDataToRegister(values) {
-   const loadingToast =  toast.loading('Loading..', {duration: 6000 ,iconTheme: {primary: "#00cc74", secondary: "#fff"}})
+    const loadingToast = toast.loading("Loading..", {
+      duration: 6000,
+      iconTheme: { primary: "#00cc74", secondary: "#fff" },
+    });
     try {
-            const options = {
+      const options = {
         url: "https://ecommerce.routemisr.com/api/v1/auth/signup",
         method: "POST",
         data: values,
       };
       const { data } = await axios.request(options);
+      console.log(data);
       toast.success("Account Registered Successfuly!");
-      navigate('/')
-    } 
-    catch (error) {
-     toast.error(error.response.data.message)
-     
-    }
-    finally{
-      toast.dismiss(loadingToast)
+      navigate("/");
+    } catch (error) {
+      toast.error(error.response.data.message);
+    } finally {
+      toast.dismiss(loadingToast);
     }
   }
 
@@ -149,7 +152,12 @@ export default function SignUp() {
           Sign UP
         </button>
 
-        <NavLink to={'/login'} className="nav-login mt-2 text-center fw-medium mt-3">Already have an account?</NavLink>
+        <NavLink
+          to={"/login"}
+          className="nav-login mt-2 text-center fw-medium mt-3"
+        >
+          Already have an account?
+        </NavLink>
       </form>
     </div>
   );

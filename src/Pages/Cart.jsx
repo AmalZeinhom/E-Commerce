@@ -1,8 +1,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faOpencart } from "@fortawesome/free-brands-svg-icons";
-import { easeInOut, motion } from "framer-motion";
+import { easeInOut } from "framer-motion";
 import CartItems from "../SubPages/CartItems";
-import { cartContext } from "../Context/CartContext";
+import { CartContext } from "../Context/CartContextSeperate.jsx";
 import React, { useContext, useEffect, useRef } from "react";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
@@ -12,10 +12,10 @@ import "react-loading-skeleton/dist/skeleton.css";
 import BackButton from "../Components/BackButton";
 
 export default function Cart() {
-  let { cart, getLoggedUserCart, clearCart, loading } = useContext(cartContext);
+  let { cart, getLoggedUserCart, clearCart, loading } = useContext(CartContext);
   const isCartEmpty = cart?.data?.products?.length === 0;
   const totalPrice = cart?.data?.products.reduce((acc, item) => {
-    return acc + item.price * item.count; // لو عندك count
+    return acc + item.price * item.count; 
   }, 0);
   const checkOut = useRef(null);
 
@@ -26,7 +26,7 @@ export default function Cart() {
 
   useEffect(() => {
     getLoggedUserCart();
-  }, []);
+  });
 
   useEffect(() => {
   console.log(cart?.data?.products);

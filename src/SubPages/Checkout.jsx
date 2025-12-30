@@ -4,7 +4,7 @@ import onlineOrder from "../assets/onlineOrder.png";
 import cashOrder from "../assets/cashOrder.png";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { cartContext } from "../Context/CartContext";
+import { CartContext } from "../Context/CartContextSeperate.jsx";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -12,7 +12,7 @@ import toast from "react-hot-toast";
 const Checkout = forwardRef((props, ref) => {
   const { totalPrice } = props;
   const phoneRegex = /^01[0125][0-9]{8}$/;
-  const { cart, getLoggedUserCart, setLastOrder } = useContext(cartContext);
+  const { cart, getLoggedUserCart, setLastOrder } = useContext(CartContext);
   const [pay, setPay] = useState('cash');
   let navigate = useNavigate();
 

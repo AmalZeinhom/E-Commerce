@@ -1,9 +1,9 @@
 import React, { useContext } from 'react'
-import { authContext } from '../Context/AuthContext'
+import { AuthContext } from "../Context/AuthContextSeperate.jsx";
 import { Navigate } from 'react-router-dom';
 
 export default function LoginProtected({children}) {
-    let { token } = useContext(authContext);
+    let { token } = useContext(AuthContext);
   return (
     <div>{!token ? children : <Navigate to={'/'}/>}</div>
   )

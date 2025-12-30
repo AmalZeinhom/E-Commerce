@@ -1,27 +1,22 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { createContext, useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { object, string } from "yup";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { authContext } from "../Context/AuthContext";
+import { AuthContext } from "../Context/AuthContextSeperate.jsx";
 
 export default function Login() {
-  const passwordRegex = /^[A-Z][a-z,0-9]{5,}$/;
   const navigate = useNavigate();
   const [showPass, setShowPass] = useState("password");
-  let {setToken, verifyToken} = useContext(authContext);
+  let {setToken, verifyToken} = useContext(AuthContext);
 
   const validationSchema = object({
     email: string().required("Email is Requird").email("Invalid Email Format"),
     password: string()
       .required("Password is Requird")
-      .matches(
-        passwordRegex,
-        "Password Must Start With Capital Letter Followed by 5 or More Characters"
-      ),
   });
 
   const formik = useFormik({

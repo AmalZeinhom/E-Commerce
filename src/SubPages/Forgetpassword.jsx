@@ -24,7 +24,8 @@ export default function Forgetpassword() {
       );
 
       toast.success("OTP Sent to Your Email.");
-      navigate("/verify", {state: {email}});
+      navigate("/verify", { state: { email } });
+      console.log(data);
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong");
     } finally {

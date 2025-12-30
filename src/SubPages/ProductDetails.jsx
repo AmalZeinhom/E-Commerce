@@ -11,19 +11,19 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Autoplay } from "swiper/modules";
-import { wishListContext } from "../Context/WishListContext";
+import { WishListContext } from "../Context/WighListContextSeperate.jsx";
 import BackButton from "../Components/BackButton";
-import { cartContext } from "../Context/CartContext";
+import { CartContext } from "../Context/CartContextSeperate.jsx";
 
 export default function ProductDetails() {
   //id is the dynamic variable in the productDetails route on App.jsx
   let { id } = useParams();
   let [product, setProducts] = useState(null);
   let [currentIndex, setCurrentIndex] = useState(0);
-  let [loading, setLoading] = useState(false);
-  let { wishList } = useContext(wishListContext);
-  let { addProductToWishList } = useContext(wishListContext);
-  let { addProductsToCart } = useContext(cartContext);
+  let [ setLoading] = useState(false);
+  let { wishList } = useContext(WishListContext);
+  let { addProductToWishList } = useContext(WishListContext);
+  let { addProductsToCart } = useContext(CartContext);
 
   async function getProductDetails() {
     setLoading(true);
@@ -42,7 +42,7 @@ export default function ProductDetails() {
 
   useEffect(() => {
     getProductDetails();
-  }, []);
+  });
 
   useEffect(() => {
     if (!product || !product.images) return;

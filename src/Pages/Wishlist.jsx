@@ -1,23 +1,22 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGratipay } from "@fortawesome/free-brands-svg-icons";
-import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { useContext, useEffect } from "react";
-import { cartContext } from "../Context/CartContext";
-import { NavLink, useNavigate } from "react-router-dom";
-import { wishListContext } from "../Context/WishListContext";
+import { CartContext } from "../Context/CartContextSeperate.jsx";
+import { NavLink } from "react-router-dom";
+import { WishListContext } from "../Context/WighListContextSeperate.jsx";
 import WishListItems from "../SubPages/WishListItems";
 import Skeleton from "react-loading-skeleton";
 import BackButton from "../Components/BackButton";
 
 
 export default function WishList() {
-  const { wishList, getLoggedUserWishlist, clearWishList } =
-    useContext(wishListContext);
-  const { loading } = useContext(cartContext);
+  const { wishList, getLoggedUserWishlist } =
+    useContext(WishListContext);
+  const { loading } = useContext(CartContext);
 
   useEffect(() => {
     getLoggedUserWishlist();
-  }, []);
+  });
 
   return (
     <div className="container py-5 cart-bg my-5 rounded-5">

@@ -28,6 +28,7 @@ export default function VerifyOTP() {
       navigate("/resetPassword", { state: { email, resetCode } });
     } catch (error) {
       toast.error("Invalid or expired code");
+      console.log(error);
     } finally {
       toast.dismiss(loadingToast);
     }

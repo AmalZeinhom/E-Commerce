@@ -1,5 +1,4 @@
-import React, { useEffect, useContext, useState } from "react";
-import { cartContext } from "../Context/CartContext";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { NavLink, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,11 +12,9 @@ import Loader from "../Components/Loader";
 import BackButton from "../Components/BackButton";
 
 export default function Orders() {
-  const { userToken } = useContext(cartContext);
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const dateOnly = new Date(orders.createdAt).toLocaleDateString();
 
   async function getOrders() {
     const userId = localStorage.getItem("userId");

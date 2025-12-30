@@ -1,10 +1,8 @@
 import axios from "axios";
-import { createContext, useEffect, useState } from "react";
-
-export let wishListContext = createContext(null)
-
+import { useEffect, useState } from "react";
 import React from 'react'
 import toast from "react-hot-toast";
+import { WishListContext } from "./WighListContextSeperate.jsx"
 
 export default function WishListContextProvider({children}) {
     const [wishList, setWishList] = useState(null)
@@ -70,8 +68,8 @@ export default function WishListContextProvider({children}) {
     },[])
 
   return (
-    <wishListContext.Provider value={{wishList, addProductToWishList, getLoggedUserWishlist, removeItemFromWishList }}>
+    <WishListContext.Provider value={{wishList, addProductToWishList, getLoggedUserWishlist, removeItemFromWishList }}>
         {children}
-    </wishListContext.Provider>
+    </WishListContext.Provider>
   )
 }

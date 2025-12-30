@@ -5,14 +5,14 @@ import {
   faPlus,
   faRemove,
 } from "@fortawesome/free-solid-svg-icons";
-import { easeInOut, motion } from "framer-motion";
-import { cartContext } from "../Context/CartContext";
+import { motion } from "framer-motion";
+import { CartContext } from "../Context/CartContextSeperate.jsx";
 import React, { useContext, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 
 export default function CartItems({ item }) {
   const MotionIcon = motion(FontAwesomeIcon);
-  let { removeProductFromCart, loading } = useContext(cartContext);
+  let { removeProductFromCart, loading } = useContext(CartContext);
   const [count, setCount] = useState(item.count);
   const [totalPrice, setTotalPrice] = useState(item.price * item.count);
 
@@ -27,7 +27,7 @@ export default function CartItems({ item }) {
           <div className="text-center">
             {loading ? (
               <Skeleton
-                height={auto}
+                height="auto"
                 width={200}
                 borderRadius={50}
                 className="rounded-3"

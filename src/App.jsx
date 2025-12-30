@@ -1,7 +1,7 @@
 import React from "react";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "../node_modules/bootstrap/dist/js/bootstrap.bundle.js";
-import { createBrowserRouter, createHashRouter, RouterProvider } from "react-router-dom";
+import { createHashRouter, RouterProvider } from "react-router-dom";
 import Home from "./Pages/Home.jsx";
 import Categories from "./Pages/Categories.jsx";
 import Brands from "./Pages/Brands.jsx";
@@ -13,7 +13,7 @@ import NotFound from "./Pages/NotFound.jsx";
 import SubCategory from "../src/SubPages/SubCategory.jsx";
 import SubBrands from "../src/SubPages/SubBrands.jsx";
 import SignUp from "./Pages/SignUp.jsx";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import Forgetpassword from "./SubPages/Forgetpassword.jsx";
 import ResetPassword from "./SubPages/ResetPAssword.jsx";
 import VerifyOTP from "./SubPages/VerifyOTP.jsx";
@@ -25,11 +25,8 @@ import AuthContextProvider from "./Context/AuthContext.jsx";
 import LoginProtected from "./Protected/LoginProtected.jsx";
 import Wishlist from "./Pages/Wishlist.jsx";
 import WishListContextProvider from "./Context/WishListContext.jsx";
-import pageTitle from "./Components/PageTitle.jsx";
 
 export default function App() {
-
-
   // Routing
   let routes = createHashRouter([
     {
@@ -126,7 +123,6 @@ export default function App() {
     },
   ]);
 
-  
   return (
     <AuthContextProvider>
       <CartContextProvider>

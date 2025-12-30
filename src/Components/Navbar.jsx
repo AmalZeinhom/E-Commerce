@@ -13,17 +13,17 @@ import {
   faShoppingCart,
   faHeartCirclePlus,
 } from "@fortawesome/free-solid-svg-icons";
-import { faHeart } from "@fortawesome/free-regular-svg-icons";
-import { cartContext } from "../Context/CartContext";
-import { authContext } from "../Context/AuthContext";
-import { wishListContext } from "../Context/WishListContext";
 import { motion } from "framer-motion";
+import { faHeart } from "@fortawesome/free-regular-svg-icons";
+import { CartContext } from "../Context/CartContextSeperate.jsx";
+import { AuthContext } from "../Context/AuthContextSeperate.jsx";
+import { WishListContext } from "../Context/WighListContextSeperate.jsx";
 
 export default function Navbar() {
   const navigate = useNavigate();
-  let { cart } = useContext(cartContext);
-  let { wishList } = useContext(wishListContext);
-  let { token, setToken } = useContext(authContext);
+  let { cart } = useContext(CartContext);
+  let { wishList } = useContext(WishListContext);
+  let { token, setToken } = useContext(AuthContext);
   let [counter, setCounter] = useState(cart?.numOfCartItems);
 
   function handleLogOut() {
@@ -39,7 +39,10 @@ export default function Navbar() {
   return (
     <nav className="fixed-top navbar navbar-expand-lg custom-navbar">
       <div className="container">
-        <NavLink className="navbar-brand text-nowrap" onClick={() => navigate('/')}>
+        <NavLink
+          className="navbar-brand text-nowrap"
+          onClick={() => navigate("/")}
+        >
           <FontAwesomeIcon icon={faOpencart} className="me-2" />
           <span>FreshCart</span>
         </NavLink>
@@ -98,7 +101,7 @@ export default function Navbar() {
                 <li className="nav-item">
                   <NavLink className="nav-link" to={"/wishlist"}>
                     <motion.div
-                    whileHover={{rotate: [0, -10, 10, -10, 0],}}
+                      whileHover={{ rotate: [0, -10, 10, -10, 0] }}
                       style={{
                         display: "inline-block",
                         color: "#00cc74",

@@ -6,13 +6,13 @@ import {
   faTrashCan,
   faCartPlus,
 } from "@fortawesome/free-solid-svg-icons";
-import { cartContext } from "../Context/CartContext";
-import { wishListContext } from "../Context/WishListContext";
+import { CartContext } from "../Context/CartContextSeperate.jsx";
+import { WishListContext } from "../Context/WighListContextSeperate.jsx";
 import { useNavigate } from "react-router-dom";
 
 export default function WishListItems({item}) {
-    const { loading } = useContext(cartContext);
-    let { removeItemFromWishList } = useContext(wishListContext);
+    const { loading } = useContext(CartContext);
+    let { removeItemFromWishList } = useContext(WishListContext);
     const navigate = useNavigate()
 
   return (

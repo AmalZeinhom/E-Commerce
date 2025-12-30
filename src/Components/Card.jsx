@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import {
   faStar,
@@ -7,12 +7,12 @@ import {
   faHeart,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { cartContext } from "../Context/CartContext";
-import { wishListContext } from "../Context/WishListContext";
+import { CartContext } from "../Context/CartContextSeperate.jsx";
+import { WishListContext } from "../Context/WighListContextSeperate.jsx";
 
 export default function Card({ product }) {
-  let { addProductsToCart } = useContext(cartContext);
-  let { addProductToWishList } = useContext(wishListContext);
+  let { addProductsToCart } = useContext(CartContext);
+  let { addProductToWishList } = useContext(WishListContext);
 
   return (
     <>

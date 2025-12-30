@@ -1,10 +1,10 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Navigate } from "react-router-dom";
-import { authContext } from "../Context/AuthContext";
+import { AuthContext } from "../Context/AuthContextSeperate.jsx";
 
 export default function ProtectedRoutes({ children }) {
 
-  let {token} = useContext(authContext);
+  let {token} = useContext(AuthContext);
 
 
   return (

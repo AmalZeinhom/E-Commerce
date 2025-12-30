@@ -1,8 +1,7 @@
-import { createContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import toast from "react-hot-toast";
+import { AuthContext } from "./AuthContextSeperate";
 
-export let authContext = createContext(null);
 
 export default function AuthContextProvider({ children }) {
   let [token, setToken] = useState(localStorage.getItem("token"));
@@ -27,20 +26,18 @@ export default function AuthContextProvider({ children }) {
       console.log(error);
       setToken(null);
       localStorage.removeItem("token");
-      localStorage.removeItem("token");
-    localStorage.removeItem("userId");
-    setUserId(null);
+      localStorage.removeItem("userId");
+      setUserId(null);
     }
   }
-
 
   useEffect(() => {
     verifyToken();
   }, []);
 
   return (
-    <authContext.Provider value={{ token, setToken, verifyToken, userId }}>
+    <AuthContext.Provider value={{ token, setToken, verifyToken, userId }}>
       {children}
-    </authContext.Provider>
+    </AuthContext.Provider>
   );
 }

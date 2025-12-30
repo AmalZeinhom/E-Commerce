@@ -1,19 +1,18 @@
-import { createContext, useEffect, useState } from "react";
+// src/Context/CartContextProvider.jsx
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
-import React from "react";
+import { CartContext } from "./CartContextSeperate.jsx"; 
 
-export let cartContext = createContext(null);
 export default function CartContextProvider({ children }) {
   const [cart, setCart] = useState(null);
   const [loading, setLoading] = useState(true);
-  const[lastOrder, setLastOrder] = useState(null)
+  const [lastOrder, setLastOrder] = useState(null);
 
   async function getLoggedUserCart() {
     setLoading(true);
-    // setDisableBtn(true);
     try {
-      let { data } = await axios.get(
+      const { data } = await axios.get(
         "https://ecommerce.routemisr.com/api/v1/cart",
         {
           headers: {
@@ -25,9 +24,7 @@ export default function CartContextProvider({ children }) {
     } catch (error) {
       console.log(error);
     } finally {
-        // setDisableBtn(false);
       setLoading(false);
-      
     }
   }
 
@@ -36,21 +33,15 @@ export default function CartContextProvider({ children }) {
       iconTheme: { primary: "#00cc74", secondary: "#fff" },
     });
     try {
-      let { data } = await axios.post(
+      const { data } = await axios.post(
         "https://ecommerce.routemisr.com/api/v1/cart",
+        { productId },
         {
-          productId,
-        },
-        {
-          headers: {
-            token: localStorage.getItem("token"),
-          },
+          headers: { token: localStorage.getItem("token") },
         }
       );
-
-      console.log(data);
-      toast.success("Product has been Successfuly Added");
       setCart(data);
+      toast.success("Product has been successfully added");
     } catch (error) {
       console.log(error);
     } finally {
@@ -63,18 +54,14 @@ export default function CartContextProvider({ children }) {
       iconTheme: { primary: "#00cc74", secondary: "#fff" },
     });
     try {
-      let { data } = await axios.delete(
+      const { data } = await axios.delete(
         `https://ecommerce.routemisr.com/api/v1/cart/${cartItemId}`,
         {
-          headers: {
-            token: localStorage.getItem("token"),
-          },
+          headers: { token: localStorage.getItem("token") },
         }
       );
-
-      console.log(data);
-      toast.success("Product has been Successfully Deleted");
       setCart(data);
+      toast.success("Product has been successfully deleted");
     } catch (error) {
       console.log(error);
     } finally {
@@ -87,17 +74,14 @@ export default function CartContextProvider({ children }) {
       iconTheme: { primary: "#00cc74", secondary: "#fff" },
     });
     try {
-      let { data } = await axios.delete(
-        `https://ecommerce.routemisr.com/api/v1/cart`,
+      const { data } = await axios.delete(
+        "https://ecommerce.routemisr.com/api/v1/cart",
         {
-          headers: {
-            token: localStorage.getItem("token"),
-          },
+          headers: { token: localStorage.getItem("token") },
         }
       );
-
-      toast.success("The Entire Content has been Deleted");
       setCart(data);
+      toast.success("The entire cart has been cleared");
     } catch (error) {
       console.log(error);
     } finally {
@@ -110,7 +94,7 @@ export default function CartContextProvider({ children }) {
   }, []);
 
   return (
-    <cartContext.Provider
+    <CartContext.Provider
       value={{
         cart,
         loading,
@@ -123,6 +107,6 @@ export default function CartContextProvider({ children }) {
       }}
     >
       {children}
-    </cartContext.Provider>
+    </CartContext.Provider>
   );
 }
