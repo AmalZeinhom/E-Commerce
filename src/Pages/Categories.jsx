@@ -22,8 +22,8 @@ export default function Categories() {
     getAllCategories();
   }, []);
 
-  if(loading){
-    return <Loader/>
+  if (loading) {
+    return <Loader />;
   }
 
   return (
@@ -33,37 +33,32 @@ export default function Categories() {
       <hr />
 
       <div className="container">
-        
         {searchParams.get("id") ? (
-          
           <Outlet />
         ) : (
           <div>
-            <BackButton/>
-            <div className="row">
-            {categories.map((category) => (
-              <div className="col-lg-2 col-md-6">
-                <div
-                  key={category._id}
-                  className="catCard border-0 d-flex align-items-center justify-content-center"
-                >
-                  <NavLink to={`subCategory?id=${category._id}`}>
-                    <img
-                      src={category.image}
-                      className="cat-Img"
-                      alt={category.image}
-                      style={{
-                        height: "140px",
-                        width: "140px",
-                        objectFit: "cover",
-                      }}
-                    />
-                  </NavLink>
+            <BackButton />
+            <div className="row mt-5 d-flex justify-content-center align-items-center">
+              {categories.map((category) => (
+                <div className="col-6 col-md-2 mb-5">
+                  <div key={category._id} className="catCard border-0 mb-5">
+                    <NavLink to={`subCategory?id=${category._id}`}>
+                      <img
+                        src={category.image}
+                        className="cat-Img"
+                        alt={category.image}
+                        style={{
+                          height: "140px",
+                          width: "140px",
+                          objectFit: "cover",
+                        }}
+                      />
+                    </NavLink>
+                    <p className="catText text-center pt-1">{category.name}</p>
+                  </div>
                 </div>
-                <p className="catText text-center pt-1">{category.name}</p>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
           </div>
         )}
       </div>

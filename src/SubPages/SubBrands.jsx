@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import Card from "../Components/Card";
 import NotFound from "../Pages/NotFound";
+import BackButton from "../Components/BackButton";
 
 export default function SubBrands() {
   let [products, setProducts] = useState([]);
@@ -28,7 +29,8 @@ export default function SubBrands() {
   return (
     <>
       <div className="container">
-        <div className="row">
+        <BackButton/>
+        <div className="row mt-5">
           {products.length === 0 ? (
             <NotFound />
           ) : (

@@ -23,7 +23,7 @@ export default function SignUp() {
       .required("Password is Requird")
       .matches(
         passwordRegex,
-        "Password must have at least 8 characters, including an uppercase letter, a lowercase letter, a number, and a special character."
+        "Password must have at least 8 characters, including an uppercase letter, a lowercase letter, a number, and a special character.",
       ),
 
     rePassword: string()
@@ -78,7 +78,7 @@ export default function SignUp() {
 
       <form
         onSubmit={formik.handleSubmit}
-        className="d-flex justify-content-center flex-column w-50"
+        className="d-flex justify-content-center flex-column"
       >
         <input
           type="text"

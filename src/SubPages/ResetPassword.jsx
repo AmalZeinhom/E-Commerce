@@ -31,7 +31,7 @@ export default function ResetPassword() {
           email,
           newPassword,
           resetCode,
-        }
+        },
       );
       toast.success("Password has been reset successfully!");
       navigate("/login");
@@ -43,7 +43,7 @@ export default function ResetPassword() {
   }
 
   return (
-    <div className="py-5 d-flex justify-content-center align-items-center flex-column register-card w-50 mx-auto">
+    <div className="py-5 d-flex justify-content-center align-items-center flex-column register-card">
       <div className="d-flex gap-3 justify-content-center align-items-center mb-3">
         <FontAwesomeIcon icon={faWrench} className="registerTitle" />
         <h1 className="registerTitle">Create New Password</h1>
@@ -51,7 +51,7 @@ export default function ResetPassword() {
 
       <form
         onSubmit={handleReset}
-        className="d-flex justify-content-center flex-column w-50"
+        className="d-flex justify-content-center flex-column"
       >
         <input
           type="password"

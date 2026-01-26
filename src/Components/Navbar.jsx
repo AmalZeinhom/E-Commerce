@@ -3,15 +3,22 @@ import "../index.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faOpencart,
   faFacebook,
   faInstagram,
   faXTwitter,
   faLinkedin,
+  faOpencart,
 } from "@fortawesome/free-brands-svg-icons";
 import {
   faShoppingCart,
   faHeartCirclePlus,
+  faHome,
+  faBox,
+  faTag,
+  faTags,
+  faClipboard,
+  faBars,
+  faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 import { motion as Motion } from "framer-motion";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
@@ -26,82 +33,94 @@ export default function Navbar() {
   let { wishList } = useContext(WishListContext);
   let { token, setToken } = useContext(AuthContext);
   let [counter, setCounter] = useState(cart?.numOfCartItems);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   function handleLogOut() {
     localStorage.removeItem("token");
     setToken(null);
+    setIsMobileMenuOpen(false);
     navigate("/login");
   }
+
+  const closeMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
 
   useEffect(() => {
     setCounter(cart?.numOfCartItems);
   }, [cart]);
 
   return (
-    <nav className="fixed-top navbar navbar-expand-lg custom-navbar">
-      <div className="container">
-        <div className="d-flex align-items-center gap-2">
-          <NavLink
-            className="navbar-brand text-nowrap"
-            onClick={() => navigate("/")}
-          >
-            <FontAwesomeIcon icon={faOpencart} className="me-2" />
-            <span>FreshCart</span>
-          </NavLink>
+    <>
+      <nav className="fixed-top navbar navbar-expand-lg custom-navbar">
+        <div className="container">
+          <div className="d-flex align-items-center gap-4 w-100">
+            {/* Logo */}
+            <NavLink
+              className="navbar-brand text-nowrap me-0"
+              onClick={() => {
+                navigate("/");
+                closeMenu();
+              }}
+            >
+              <span className="brand-text-logo">
+                <FontAwesomeIcon icon={faOpencart} className="me-2" />
+                FreshCart
+              </span>
+            </NavLink>
 
-          
-        </div>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon" />
-        </button>
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          {/* Pages */}
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            <li className="nav-item">
-              <NavLink
-                className={({ isActive }) =>
-                  isActive ? "nav-link active" : "nav-link"
-                }
-                to="/"
-              >
-                Home
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink className="nav-link" to="/products">
-                Products
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink className="nav-link" to="/categories">
-                Categories
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink className="nav-link" to="/brands">
-                Brands
-              </NavLink>
-            </li>
-            {token ? (
+            {/* Desktop Navigation Links - Left Side */}
+            <ul className="navbar-nav d-none d-lg-flex gap-2 ms-4">
               <li className="nav-item">
-                <NavLink className="nav-link" to="/orders">
-                  Orders
+                <NavLink
+                  className={({ isActive }) =>
+                    isActive ? "nav-link active" : "nav-link"
+                  }
+                  to="/"
+                  onClick={closeMenu}
+                >
+                  Home
                 </NavLink>
               </li>
-            ) : null}
-          </ul>
+              <li className="nav-item">
+                <NavLink
+                  className="nav-link"
+                  to="/products"
+                  onClick={closeMenu}
+                >
+                  Products
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink
+                  className="nav-link"
+                  to="/categories"
+                  onClick={closeMenu}
+                >
+                  Categories
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/brands" onClick={closeMenu}>
+                  Brands
+                </NavLink>
+              </li>
+              {token ? (
+                <li className="nav-item">
+                  <NavLink
+                    className="nav-link"
+                    to="/orders"
+                    onClick={closeMenu}
+                  >
+                    Orders
+                  </NavLink>
+                </li>
+              ) : null}
+            </ul>
 
-          {/* Social Media */}
-          <ul className="navbar-nav mb-2 mb-lg-0">
-            <>
+            <div className="flex-grow-1"></div>
+
+            <ul className="navbar-nav d-none d-lg-flex order-lg-2">
               <li className="nav-item">
                 <NavLink
                   className="nav-link"
@@ -111,6 +130,8 @@ export default function Navbar() {
                       e.preventDefault();
                       toast.error("Please login to view favorites");
                       navigate("/login");
+                    } else {
+                      closeMenu();
                     }
                   }}
                 >
@@ -149,6 +170,8 @@ export default function Navbar() {
                       e.preventDefault();
                       toast.error("Please login to view your cart");
                       navigate("/login");
+                    } else {
+                      closeMenu();
                     }
                   }}
                 >
@@ -171,67 +194,255 @@ export default function Navbar() {
                   {counter}
                 </div>
               </li>
-            </>
+            </ul>
 
-            <li className="nav-item">
-              <NavLink className="nav-link" to="#">
-                <FontAwesomeIcon
-                  icon={faFacebook}
-                  className="me-2"
-                  color="blue"
-                />
+            <ul className="navbar-nav d-none d-lg-flex gap-1 order-lg-3">
+              <li className="nav-item">
+                <NavLink className="nav-link" to="#">
+                  <FontAwesomeIcon
+                    icon={faFacebook}
+                    className="me-2"
+                    color="blue"
+                  />
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink className="nav-link" to="#">
+                  <FontAwesomeIcon
+                    icon={faInstagram}
+                    className="me-2"
+                    color="red"
+                  />
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink className="nav-link" to="#">
+                  <FontAwesomeIcon
+                    icon={faXTwitter}
+                    className="me-2"
+                    color="black"
+                  />
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink className="nav-link" to="#">
+                  <FontAwesomeIcon
+                    icon={faLinkedin}
+                    className="me-2"
+                    color="blue"
+                  />
+                </NavLink>
+              </li>
+              {!token ? (
+                <>
+                  <li className="nav-item">
+                    <NavLink
+                      className="nav-link"
+                      to="/Login"
+                      onClick={closeMenu}
+                    >
+                      Login
+                    </NavLink>
+                  </li>
+                  <li className="nav-item">
+                    <NavLink
+                      className="nav-link"
+                      to="/signUp"
+                      onClick={closeMenu}
+                    >
+                      Sign up
+                    </NavLink>
+                  </li>
+                </>
+              ) : (
+                <li className="nav-item">
+                  <span
+                    className="nav-link"
+                    role="button"
+                    onClick={handleLogOut}
+                  >
+                    Log Out
+                  </span>
+                </li>
+              )}
+            </ul>
+
+            <button
+              className="navbar-toggler d-lg-none ms-2"
+              type="button"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              <FontAwesomeIcon
+                icon={isMobileMenuOpen ? faTimes : faBars}
+                size="lg"
+              />
+            </button>
+          </div>
+
+          <button
+            className="navbar-toggler d-none"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon" />
+          </button>
+
+          <div
+            className="collapse navbar-collapse d-lg-flex"
+            id="navbarSupportedContent"
+          ></div>
+        </div>
+      </nav>
+
+      {isMobileMenuOpen && (
+        <Motion.div
+          className="mobile-menu-dropdown d-lg-none"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.2 }}
+        >
+          <div className="mobile-nav-section">
+            <h6 className="mobile-nav-title">Navigation</h6>
+            <NavLink
+              className={({ isActive }) =>
+                isActive ? "mobile-nav-item active" : "mobile-nav-item"
+              }
+              to="/"
+              onClick={closeMenu}
+            >
+              <FontAwesomeIcon icon={faHome} className="me-3" />
+              <span>Home</span>
+            </NavLink>
+            <NavLink
+              className="mobile-nav-item"
+              to="/products"
+              onClick={closeMenu}
+            >
+              <FontAwesomeIcon icon={faBox} className="me-3" />
+              <span>Products</span>
+            </NavLink>
+            <NavLink
+              className="mobile-nav-item"
+              to="/categories"
+              onClick={closeMenu}
+            >
+              <FontAwesomeIcon icon={faTag} className="me-3" />
+              <span>Categories</span>
+            </NavLink>
+            <NavLink
+              className="mobile-nav-item"
+              to="/brands"
+              onClick={closeMenu}
+            >
+              <FontAwesomeIcon icon={faTags} className="me-3" />
+              <span>Brands</span>
+            </NavLink>
+            {token ? (
+              <NavLink
+                className="mobile-nav-item"
+                to="/orders"
+                onClick={closeMenu}
+              >
+                <FontAwesomeIcon icon={faClipboard} className="me-3" />
+                <span>Orders</span>
               </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink className="nav-link" to="#">
-                <FontAwesomeIcon
-                  icon={faInstagram}
-                  className="me-2"
-                  color="red"
-                />
+            ) : null}
+
+            <div className="d-flex justify-content-center align-items-center">
+              <NavLink
+                className="mobile-nav-item"
+                to={"/wishlist"}
+                onClick={(e) => {
+                  if (!token) {
+                    e.preventDefault();
+                    toast.error("Please login to view favorites");
+                    navigate("/login");
+                  } else {
+                    closeMenu();
+                  }
+                }}
+              >
+                <FontAwesomeIcon icon={faHeart} className="me-3" color="red" />
+                <span>Wishlist</span>
               </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink className="nav-link" to="#">
+
+              <NavLink
+                className="mobile-nav-item"
+                to={"/cart"}
+                onClick={(e) => {
+                  if (!token) {
+                    e.preventDefault();
+                    toast.error("Please login to view your cart");
+                    navigate("/login");
+                  } else {
+                    closeMenu();
+                  }
+                }}
+              >
                 <FontAwesomeIcon
-                  icon={faXTwitter}
-                  className="me-2"
-                  color="black"
+                  icon={faShoppingCart}
+                  className="me-3"
+                  color="green"
                 />
+                <span>Cart</span>
               </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink className="nav-link" to="#">
-                <FontAwesomeIcon
-                  icon={faLinkedin}
-                  className="me-2"
-                  color="blue"
-                />
-              </NavLink>
-            </li>
+            </div>
+          </div>
+
+          <div className="mobile-nav-section border-top">
+            <h6 className="mobile-nav-title">Account</h6>
             {!token ? (
               <>
-                <li className="nav-item">
-                  <NavLink className="nav-link" to="/Login">
-                    Login
-                  </NavLink>
-                </li>
-                <li className="nav-item">
-                  <NavLink className="nav-link" to="/signUp">
-                    Sign up
-                  </NavLink>
-                </li>
+                <NavLink
+                  className="mobile-nav-item"
+                  to="/Login"
+                  onClick={closeMenu}
+                >
+                  <span>Login</span>
+                </NavLink>
+                <NavLink
+                  className="mobile-nav-item"
+                  to="/signUp"
+                  onClick={closeMenu}
+                >
+                  <span>Sign Up</span>
+                </NavLink>
               </>
             ) : (
-              <li className="nav-item">
-                <span className="nav-link" role="button" onClick={handleLogOut}>
-                  Log Out
-                </span>
-              </li>
+              <button
+                className="mobile-nav-item w-100 text-start"
+                onClick={handleLogOut}
+              >
+                <span>Log Out</span>
+              </button>
             )}
-          </ul>
-        </div>
-      </div>
-    </nav>
+          </div>
+
+          <div className="mobile-nav-section border-top">
+            <h6 className="mobile-nav-title">Follow Us</h6>
+            <div className="mobile-social-links">
+              <NavLink to="#" className="social-icon-mobile">
+                <FontAwesomeIcon icon={faFacebook} color="blue" />
+              </NavLink>
+              <NavLink to="#" className="social-icon-mobile">
+                <FontAwesomeIcon icon={faInstagram} color="red" />
+              </NavLink>
+              <NavLink to="#" className="social-icon-mobile">
+                <FontAwesomeIcon icon={faXTwitter} color="black" />
+              </NavLink>
+              <NavLink to="#" className="social-icon-mobile">
+                <FontAwesomeIcon icon={faLinkedin} color="blue" />
+              </NavLink>
+            </div>
+          </div>
+        </Motion.div>
+      )}
+    </>
   );
 }

@@ -22,7 +22,7 @@ export default function VerifyOTP() {
     try {
       await axios.post(
         "https://ecommerce.routemisr.com/api/v1/auth/verifyResetCode",
-        { resetCode: resetCode.trim() }
+        { resetCode: resetCode.trim() },
       );
       toast.success("Code verified!");
       navigate("/resetPassword", { state: { email, resetCode } });
@@ -35,7 +35,7 @@ export default function VerifyOTP() {
   }
 
   return (
-    <div className="py-5 d-flex justify-content-center align-items-center flex-column register-card w-50 mx-auto">
+    <div className="py-5 d-flex justify-content-center align-items-center flex-column register-card">
       <div className="d-flex gap-3 justify-content-center align-items-center mb-3">
         <FontAwesomeIcon icon={faMessage} className="registerTitle" />
         <h1 className="registerTitle">Check Your Email</h1>
@@ -43,7 +43,7 @@ export default function VerifyOTP() {
 
       <form
         onSubmit={handleVerify}
-        className="d-flex justify-content-center flex-column w-50"
+        className="d-flex justify-content-center flex-column"
       >
         <input
           type="text"

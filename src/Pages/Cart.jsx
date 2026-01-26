@@ -10,15 +10,18 @@ import Checkout from "../SubPages/Checkout";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import BackButton from "../Components/BackButton";
-import { motion } from "framer-motion";
+import { motion as Motion } from "framer-motion";
 
 export default function Cart() {
   let { cart, getLoggedUserCart, clearCart, loading } = useContext(CartContext);
+
   const isCartEmpty = cart?.data?.products?.length === 0;
+
   const totalPrice =
     cart?.data?.products.reduce((acc, item) => {
       return acc + item.price * item.count;
     }, 0) || 0;
+
   const checkOut = useRef(null);
 
   const scrollToCheckOut = () => {
@@ -29,39 +32,33 @@ export default function Cart() {
     getLoggedUserCart();
   }, []);
 
-  useEffect(() => {
-    console.log(cart?.data?.products);
-  }, [cart]);
-
   return (
-    <div className="container py-5 cart-bg my-5 rounded-5">
-      <header className="d-flex justify-content-between align-items-center px-5 mb-5">
-        <span className="d-flex align-items-center gap-3">
+    <div className="container py-4 py-lg-5 cart-bg my-4 my-lg-5 rounded-5">
+      {/* ================= HEADER ================= */}
+      <header className="cart-header d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 gap-md-0 mb-4 px-3 px-lg-5">
+        <div className="d-flex align-items-center gap-3">
           <BackButton />
-          <h4 className="fw-bold" style={{ color: "rgb(1, 133, 76)" }}>
-            Shop Cart
-          </h4>
-          <FontAwesomeIcon
-            icon={faOpencart}
-            style={{ width: "20px", height: "20px", color: "#00cc74" }}
-          />
-        </span>
+          <h4 className="fw-bold text-success mb-0">Shop Cart</h4>
+          <FontAwesomeIcon icon={faOpencart} className="text-success" />
+        </div>
 
-        <span>
-          <p className="fw-bold" style={{ color: "rgb(1, 133, 76)" }}>
-            Total Price: {totalPrice}
+        <div className="d-flex flex-column flex-sm-row align-items-start align-items-sm-center gap-2">
+          <p className="fw-bold text-success mb-0">
+            Total Price: EGP {totalPrice}
           </p>
+
           <NavLink
-            className="btn border-1 rounded-2 check-out"
+            className="btn check-out"
             onClick={scrollToCheckOut}
           >
             Check Out
           </NavLink>
-        </span>
+        </div>
       </header>
 
+      {/* ================= CONTENT ================= */}
       {loading ? (
-        <div>
+        <div className="px-3 px-lg-5">
           {[...Array(3)].map((_, i) => (
             <div className="mb-4 p-3 border rounded-4" key={i}>
               <Skeleton height={30} width={150} />
@@ -70,12 +67,12 @@ export default function Cart() {
           ))}
         </div>
       ) : isCartEmpty ? (
-        <div className="d-flex justify-content-center align-items-center flex-column">
-          <p className="text-success text-center fw-medium">
-            There is no Products yet.
+        <div className="d-flex justify-content-center align-items-center flex-column gap-3 text-center">
+          <p className="text-success fw-medium mb-0">
+            There is no products yet.
           </p>
-          <NavLink className="btn btn-success fw-bold px-3" to={"/products"}>
-            Add Your First Product in the Cart
+          <NavLink className="btn btn-success fw-bold px-4" to="/products">
+            Add Your First Product
           </NavLink>
         </div>
       ) : (
@@ -86,35 +83,30 @@ export default function Cart() {
         </>
       )}
 
+      {/* ================= CLEAR CART ================= */}
       {!isCartEmpty && !loading && (
-        <div className="d-flex justify-content-end me-5 ">
+        <div className="d-flex justify-content-center justify-content-md-end px-3 px-lg-5">
           <button
-            className="btn btn-danger text-white fs-6 fw-bold mt-5 d-flex align-items-center gap-2"
+            className="btn btn-danger fw-bold mt-4 d-flex align-items-center gap-2"
             onClick={clearCart}
           >
-            <motion.div
-              whileHover={{
-                x: [0, -4, 4, -4, 4, 0],
-              }}
-              transition={{
-                duration: 0.5,
-                ease: easeInOut,
-              }}
-              className="rounded-circle d-flex justify-content-center align-items-center"
-              style={{
-                width: "20px",
-                height: "20px",
-              }}
+            <Motion.div
+              whileHover={{ x: [0, -4, 4, -4, 4, 0] }}
+              transition={{ duration: 0.5, ease: easeInOut }}
+              className="d-flex justify-content-center align-items-center"
             >
               <FontAwesomeIcon icon={faTrashCan} />
-            </motion.div>
+            </Motion.div>
             Clear All Products
           </button>
         </div>
       )}
 
+      {/* ================= CHECKOUT ================= */}
       {!isCartEmpty && (
-        <Checkout ref={checkOut} totalPrice={cart?.data?.totalCartPrice} />
+        <div ref={checkOut} className="mt-5">
+          <Checkout totalPrice={cart?.data?.totalCartPrice} />
+        </div>
       )}
     </div>
   );

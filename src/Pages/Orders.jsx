@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { NavLink, Spinner } from "react-bootstrap";
+import { NavLink } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faTruckFast,
@@ -20,10 +20,9 @@ export default function Orders() {
     const userId = localStorage.getItem("userId");
     try {
       const { data } = await axios.get(
-        `https://ecommerce.routemisr.com/api/v1/orders/user/${userId}`
+        `https://ecommerce.routemisr.com/api/v1/orders/user/${userId}`,
       );
       setOrders(data);
-      console.log(data);
     } catch (error) {
       console.error("Error fetching orders:", error);
     } finally {
@@ -38,198 +37,132 @@ export default function Orders() {
   if (loading) {
     return (
       <div className="d-flex justify-content-center mt-5">
-        <Loader/>
+        <Loader />
       </div>
     );
   }
 
   return (
-    <div className="container mt-5">
-      <div>
-        <div className="d-flex align-items-center gap-3 mb-3">
-          <BackButton/>
-          <h3 className="fw-bold" style={{ color: "rgb(1, 133, 76)" }}>
-            Track Your Orders
-          </h3>
-          <FontAwesomeIcon
-            icon={faTruckFast}
-            style={{ width: "30px", height: "30px", color: "#00cc74" }}
-          />
-        </div>
+    <div className="container mt-5 orders-page">
+      {/* 🔴 MODIFIED: header wrapper for responsive */}
+      <div className="orders-header d-flex align-items-center gap-3 mb-4">
+        <BackButton />
+        <h3 className="fw-bold text-success mb-0">Track Your Orders</h3>
+        <FontAwesomeIcon icon={faTruckFast} className="orders-icon" />
       </div>
 
       {orders.length === 0 ? (
-        <div className="d-flex justify-content-center align-items-center flex-column">
-          <p className="text-success text-center fw-medium">
-            There is no Products yet.
-          </p>
-          <button className="btn btn-success fw-bold px-3" onClick={() => navigate('/products')}>
+        <div className="d-flex justify-content-center align-items-center flex-column text-center">
+          <p className="text-success fw-medium">There is no Products yet.</p>
+          <button
+            className="btn btn-success fw-bold px-3"
+            onClick={() => navigate("/products")}
+          >
             Add Your First Product in the Cart
           </button>
         </div>
       ) : (
         orders.map((order, index) => (
-          <div
-            key={order._id}
-            className="p-4 mb-4"
-            style={{ border: "1px dashed #b3b3b3", borderRadius: "5px" }}
-          >
-            <p
-              style={{
-                color: "rgb(1, 133, 76)",
-                fontWeight: "700",
-                fontSize: "25px",
-              }}
-            >
-              Order #{index + 1}
-            </p>
-            <div
-              className="d-flex justify-content-between align-items-center p-4 pb-0"
-              style={{ color: "rgb(1, 133, 76)", fontWeight: "500" }}
-            >
+          <div key={order._id} className="order-card p-4 mb-4">
+            <p className="order-title">Order #{index + 1}</p>
+
+            {/* 🔴 MODIFIED: order info becomes responsive grid */}
+            <div className="order-info">
               <p>
-                Transaction Number:
-                <span className="ms-2" style={{ color: "#00cc74" }}>
-                  #{order.id}
-                </span>
+                Transaction:
+                <span> #{order.id}</span>
               </p>
               <p>
                 Placed On:
-                <span className="ms-2" style={{ color: "#00cc74" }}>
-                  {new Date(order.createdAt).toLocaleDateString()}
-                </span>
+                <span> {new Date(order.createdAt).toLocaleDateString()}</span>
               </p>
               <p>
-                Payment Method:
-                <span className="ms-2" style={{ color: "#00cc74" }}>
-                  {order.paymentMethodType}
-                </span>
+                Payment:
+                <span> {order.paymentMethodType}</span>
               </p>
-              <p
-                className="btn p-1 text-white"
-                style={{ backgroundColor: "#00cc74", fontSize: "14px" }}
+              <button
+                className="btn btn-success btn-sm"
                 onClick={() => navigate("/products")}
               >
                 Add New Items
-              </p>
+              </button>
             </div>
 
             <hr />
 
-            <div className="row mt-5">
+            {/* 🔴 MODIFIED: products responsive grid */}
+            <div className="row mt-4">
               {order.cartItems?.map((item) => (
-                <div
-                  key={item._id}
-                  className="col-md-4 d-flex mb-3 align-items-center"
-                >
-                  <img
-                    src={item.product.imageCover}
-                    alt={item.product.title}
-                    className="me-3"
-                    style={{
-                      width: "200px",
-                      height: "200px",
-                      objectFit: "cover",
-                    }}
-                  />
-                  <div>
-                    <NavLink
-                      className="mb-1"
-                      style={{ color: "rgb(1, 133, 76)", fontWeight: "500" }}
-                      onClick={() =>
-                        navigate(`/productDetails/${item.product._id}`)
-                      }
-                    >
-                      {item.product.title.split(" ").slice(0, 3).join(" ")}
-                    </NavLink>
-                    <p
-                      className="mb-0"
-                      style={{ color: "rgb(1, 133, 76)", fontWeight: "400" }}
-                    >
-                      Price:
-                      <span style={{ color: "#00cc74" }}>{item.price} EGP</span>
-                    </p>
-                    <p
-                      className="mb-0"
-                      style={{ color: "rgb(1, 133, 76)", fontWeight: "400" }}
-                    >
-                      Quantity:
-                      <span style={{ color: "#00cc74" }}>{item.count}</span>
-                    </p>
-                    <p
-                      className="mb-0"
-                      style={{
-                        fontSize: "14px",
-                        color: "#b3b3b3ff",
-                        fontWeight: "500",
-                      }}
-                    >
-                      {item.product.category.name}
-                    </p>
-                    <p
-                      className="mb-0"
-                      style={{
-                        fontSize: "14px",
-                        color: "#b3b3b3ff",
-                        fontWeight: "500",
-                      }}
-                    >
-                      {item.product.brand.name}
-                    </p>
+                <div key={item._id} className="col-lg-4 col-md-6 col-12 mb-4">
+                  <div className="order-product d-flex gap-3">
+                    <img
+                      src={item.product.imageCover}
+                      alt={item.product.title}
+                    />
+                    <div>
+                      <NavLink
+                        className="product-title"
+                        onClick={() =>
+                          navigate(`/productDetails/${item.product._id}`)
+                        }
+                      >
+                        {item.product.title}
+                      </NavLink>
+                      <p>
+                        Price: <span>{item.price} EGP</span>
+                      </p>
+                      <p>
+                        Qty: <span>{item.count}</span>
+                      </p>
+                      <p className="muted">{item.product.category.name}</p>
+                      <p className="muted">{item.product.brand.name}</p>
+                    </div>
                   </div>
                 </div>
               ))}
             </div>
 
-            <div
-              className="border rounded p-3 bg-light"
-              style={{ color: "rgb(1, 133, 76)" }}
-            >
-              <strong className="d-block mb-4">Shipping Info:</strong>
+            {/* 🔴 MODIFIED: shipping info responsive */}
+            <div className="shipping-box mt-3">
+              <strong className="d-block mb-3">Shipping Info:</strong>
+
               <div className="row">
-                <div className="col-md-4 mb-2">
-                  <strong>Total Price:</strong>{" "}
-                  <span style={{ color: "#00cc74", fontWeight: "500" }}>
-                    {order.totalOrderPrice} EGP
-                  </span>
+                <div className="col-md-4 col-12 mb-2">
+                  Total:
+                  <span> {order.totalOrderPrice} EGP</span>
                 </div>
-                <div className="col-md-4 mb-2 d-flex align-items-center gap-2">
-                  <strong>Paid:</strong>
-                  <span className="text-success">
-                    <FontAwesomeIcon
-                      icon={faCheckSquare}
-                      style={{ color: "#00cc74" }}
-                    />{" "}
-                    <span style={{ color: "#00cc74", fontWeight: "500" }}>
-                      Yes
-                    </span>
-                  </span>
+
+                <div className="col-md-4 col-12 mb-2 d-flex gap-2 align-items-center">
+                  Paid:
+                  <FontAwesomeIcon
+                    icon={faCheckSquare}
+                    className="text-success"
+                  />
+                  <span>Yes</span>
                 </div>
-                <div className="col-md-4 mb-2 d-flex align-items-center gap-2">
-                  <strong>Delivered:</strong>
-                  <span className="text-danger">
-                    <FontAwesomeIcon icon={faTimesSquare} /> No
-                  </span>
+
+                <div className="col-md-4 col-12 mb-2 d-flex gap-2 align-items-center">
+                  Delivered:
+                  <FontAwesomeIcon
+                    icon={faTimesSquare}
+                    className="text-danger"
+                  />
+                  <span>No</span>
                 </div>
               </div>
-              <div className="row">
-                <div className="col-md-4">
-                  <strong>City:</strong>{" "}
-                  <span style={{ color: "#00cc74", fontWeight: "500" }}>
-                    {order.shippingAddress.city}
-                  </span>
+
+              <div className="row mt-2">
+                <div className="col-md-4 col-12 mb-2">
+                  City:
+                  <span> {order.shippingAddress.city}</span>
                 </div>
-                <div className="col-md-4">
-                  <strong>Phone:</strong>{" "}
-                  <span style={{ color: "#00cc74", fontWeight: "500" }}>
-                    {order.shippingAddress.phone}
-                  </span>
+                <div className="col-md-4 col-12 mb-2">
+                  Phone:
+                  <span> {order.shippingAddress.phone}</span>
                 </div>
-                <div className="col-md-4">
-                  <strong>Details:</strong>{" "}
-                  <span style={{ color: "#00cc74", fontWeight: "500" }}>
-                    {order.shippingAddress.details}
-                  </span>
+                <div className="col-md-4 col-12 mb-2">
+                  Details:
+                  <span> {order.shippingAddress.details}</span>
                 </div>
               </div>
             </div>

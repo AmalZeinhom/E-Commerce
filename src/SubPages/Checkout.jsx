@@ -103,11 +103,11 @@ const Checkout = forwardRef((props, ref) => {
   return (
     <div>
       <div
-        className="d-flex justify-content-center position-relative mt-5"
+        className="d-flex justify-content-center position-relative mt-5 checkout-title"
         id="checkOut"
         ref={ref}
       >
-        <h3 className="text-success checked-out">Check Out</h3>
+        <h3 className="text-success checked-out text-center">Check Out</h3>
       </div>
 
       <form
@@ -173,7 +173,7 @@ const Checkout = forwardRef((props, ref) => {
           <button
             type="submit"
             onClick={() => {
-              setPay('cash')
+              setPay("cash");
             }}
             className="animated-button  btn border-0 text-white rounded-2 mt-2 py-1 fw-medium w-50 d-flex justify-content-center align-items-center gap-2"
             style={{ backgroundColor: "#00cc74" }}
@@ -185,7 +185,7 @@ const Checkout = forwardRef((props, ref) => {
           <button
             type="submit"
             onClick={() => {
-              setPay('online')
+              setPay("online");
             }}
             className="animated-button border-0  rounded-2 mt-2 py-1 fw-medium w-50 d-flex justify-content-center align-items-center gap-2 online-order"
           >

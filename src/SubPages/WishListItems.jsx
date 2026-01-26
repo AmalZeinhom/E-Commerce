@@ -14,43 +14,30 @@ import toast from "react-hot-toast";
 
 export default function WishListItems({ item }) {
   const { loading, addProductsToCart } = useContext(CartContext);
-  let { removeItemFromWishList } = useContext(WishListContext);
+  const { removeItemFromWishList } = useContext(WishListContext);
   const navigate = useNavigate();
   const { token } = useContext(AuthContext);
 
   return (
-    <div
-      key={item._id}
-      className="wishlistContent d-flex justify-content-between align-items-center flex-wrap border-bottom pb-4 mb-4"
-    >
-      <div className="pro-section px-5 d-flex justify-content-between align-items-center mb-5 flex-grow-1">
-        <div className="d-flex align-items-center justify-content-center gap-5">
-          <div className="text-center">
+    <div className="wishlistContent container border-bottom pb-4 mb-4">
+      <div className="pro-section">
+        <div className="img-text">
+          <div className="img-wrapper">
             {loading ? (
-              <Skeleton width={200} borderRadius={50} className="rounded-3" />
+              <Skeleton width={150} height={150} borderRadius={25} />
             ) : (
               <img
                 src={item?.imageCover}
                 alt={item?.title}
-                style={{
-                  width: "200px",
-                  height: "auto",
-                  borderRadius: "50px",
-                  objectFit: "contain",
-                }}
                 onClick={() => navigate(`/productDetails/${item._id}`)}
               />
             )}
           </div>
 
-          <div
-            className="data-sec"
-            style={{ maxWidth: "100%", width: "300px" }}
-          >
+          <div className="data-sec">
             <p
               className="title-sec fw-bold mb-2 text-success"
               onClick={() => navigate(`/productDetails/${item._id}`)}
-              style={{ cursor: "pointer" }}
             >
               {item?.title}
             </p>
@@ -64,7 +51,8 @@ export default function WishListItems({ item }) {
             </p>
 
             <p className="fw-bold text-success">
-              Price: <span style={{ color: "#00cc74" }}>{item?.price} EGP</span>
+              Price:
+              <span style={{ color: "#00cc74" }}> {item?.price} EGP</span>
             </p>
 
             <p className="mb-0 text-secondary">
@@ -75,9 +63,9 @@ export default function WishListItems({ item }) {
         </div>
       </div>
 
-      <div className="control d-flex justify-content-center align-items-center gap-3 me-5 col-md-4">
-        <div
-          className="btn rounded-5 btn-success d-flex align-items-center gap-2 px-4"
+      <div className="control">
+        <button
+          className="btn btn-success rounded-5 d-flex justify-content-center align-items-center gap-2 px-4"
           onClick={() => {
             if (!token) {
               toast.error("Please login to add items to cart");
@@ -89,16 +77,15 @@ export default function WishListItems({ item }) {
         >
           <FontAwesomeIcon icon={faCartPlus} />
           Add To Cart
-        </div>
-        <div
-          className="btn rounded-5 btn-danger d-flex align-items-center gap-2 px-4"
-          onClick={() => {
-            removeItemFromWishList(item._id);
-          }}
+        </button>
+
+        <button
+          className="btn btn-danger rounded-5 d-flex align-items-center gap-2 px-4"
+          onClick={() => removeItemFromWishList(item._id)}
         >
           <FontAwesomeIcon icon={faTrashCan} />
           Remove
-        </div>
+        </button>
       </div>
     </div>
   );

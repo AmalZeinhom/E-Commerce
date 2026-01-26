@@ -20,7 +20,7 @@ export default function Forgetpassword() {
     try {
       const { data } = await axios.post(
         "https://ecommerce.routemisr.com/api/v1/auth/forgotPasswords",
-        { email }
+        { email },
       );
 
       toast.success("OTP Sent to Your Email.");
@@ -34,7 +34,7 @@ export default function Forgetpassword() {
   }
 
   return (
-    <div className="py-5 d-flex justify-content-center align-items-center flex-column register-card w-50 mx-auto">
+    <div className="py-5 d-flex justify-content-center align-items-center flex-column register-card">
       <div className="d-flex gap-3 justify-content-center align-items-center mb-3">
         <FontAwesomeIcon icon={faUnlockAlt} className="registerTitle" />
         <h1 className="registerTitle">Forgot Your Password</h1>
@@ -44,7 +44,7 @@ export default function Forgetpassword() {
 
       <form
         onSubmit={handleSubmit}
-        className="d-flex justify-content-center flex-column w-50"
+        className="d-flex justify-content-center flex-column"
       >
         <input
           type="email"

@@ -11,12 +11,11 @@ import { AuthContext } from "../Context/AuthContextSeperate.jsx";
 export default function Login() {
   const navigate = useNavigate();
   const [showPass, setShowPass] = useState("password");
-  let {setToken, verifyToken} = useContext(AuthContext);
+  let { setToken, verifyToken } = useContext(AuthContext);
 
   const validationSchema = object({
     email: string().required("Email is Requird").email("Invalid Email Format"),
-    password: string()
-      .required("Password is Requird")
+    password: string().required("Password is Requird"),
   });
 
   const formik = useFormik({
@@ -44,8 +43,8 @@ export default function Login() {
       localStorage.setItem("isFirstLogin", true);
 
       localStorage.setItem("token", data.token);
-      setToken(data.token)
-      verifyToken()
+      setToken(data.token);
+      verifyToken();
       navigate("/");
     } catch (error) {
       toast.error(error.response?.data?.message || "Login failed");
@@ -67,7 +66,7 @@ export default function Login() {
 
       <form
         onSubmit={formik.handleSubmit}
-        className="d-flex justify-content-center flex-column w-50"
+        className="d-flex justify-content-center flex-column"
       >
         <input
           type="email"
@@ -86,7 +85,7 @@ export default function Login() {
           <input
             type={showPass}
             className="form-control custom-input my-1"
-            placeholder="Enter Your Password"
+            placeholder="Enter Password"
             name="password"
             value={formik.values.password}
             onChange={formik.handleChange}
@@ -116,8 +115,6 @@ export default function Login() {
                   d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88"
                 />
               </svg>
-              
-              
             ) : (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -144,7 +141,7 @@ export default function Login() {
 
         <button
           type="submit"
-          className="register-btn border-0 text-white rounded-2 mt-2 py-1 fs-5 fw-medium w-100"
+          className="register-btn border-0 text-white rounded-2 mt-2 py-1 px-2"
         >
           Log IN
         </button>
@@ -156,12 +153,13 @@ export default function Login() {
           Forgot Your Password?
         </NavLink>
 
-        <button
+        <NavLink
           type="button"
-          className="register-btn border-0 text-white rounded-2 mt-4 mx-auto py-1 fs-6 fw-medium w-50"
+          to={"/signUp"}
+          className="register-btn border-0 text-white rounded-2 mt-4 mx-auto py-1 px-2"
         >
           Create New Account
-        </button>
+        </NavLink>
       </form>
     </div>
   );

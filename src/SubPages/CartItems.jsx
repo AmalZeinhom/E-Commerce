@@ -18,118 +18,79 @@ export default function CartItems({ item }) {
 
   useEffect(() => {
     setTotalPrice(item.price * count);
-  }, [count]);
+  }, [count, item.price]);
 
   return (
-    <div>
-      <div className="pro-section px-5 d-flex justify-content-between align-items-center mb-5">
-        <div className="d-flex align-items-center justify-content-center gap-5">
-          <div className="text-center">
-            {loading ? (
-              <Skeleton
-                height="auto"
-                width={200}
-                borderRadius={50}
-                className="rounded-3"
-              />
-            ) : (
-              <img
-                src={item?.product.imageCover}
-                alt=""
-                style={{
-                  width: "200px",
-                  height: "auto",
-                  borderRadius: "50px",
-                  objectFit: "contain",
-                }}
-              />
-            )}
-          </div>
+    <div className="cart-item-wrapper">
+      <div className="pro-section d-flex flex-column flex-lg-row align-items-center justify-content-between gap-4 mb-4 px-3 px-lg-5">
 
-          <div
-            className="data-sec"
-            style={{ maxWidth: "100%", width: "300px" }}
-          >
-            <h5 className="title-sec fw-bold mb-2 text-success">
-              {item?.product.title}
-            </h5>
+        <div className="text-center flex-shrink-0">
+          {loading ? (
+            <Skeleton width={180} height={180} borderRadius={20} />
+          ) : (
+            <img
+              src={item?.product?.imageCover}
+              alt={item?.product?.title}
+              className="cart-item-image"
+            />
+          )}
+        </div>
 
-            <p className="mb-0 text-success fw-bold text-success">
-              Rate:
-              <span style={{ color: "#00cc74" }}>
-                <FontAwesomeIcon icon={faStar} className="text-warning mx-2" />
-                {item?.product.ratingsAverage}
-              </span>
-            </p>
+        <div className="data-sec text-center text-lg-start">
+          <h5 className="fw-bold text-success mb-2">{item?.product?.title}</h5>
 
-            <p className="fw-bold text-success">
-              Price: <span style={{ color: "#00cc74" }}>{item?.price}</span>
-            </p>
-
-            <p className="mb-0 text-secondary">
-              {item?.product.category.name} | {item?.product.brand.name} |{" "}
-              <span className="text-success fw-medium">Available</span>
-            </p>
-          </div>
-
-          {/* Quantity Control */}
-          <div className="d-flex align-items-center gap-3">
-            <div className="border rounded-4 px-3 py-2 d-flex align-items-center me-5">
-              <FontAwesomeIcon
-                icon={faMinus}
-                className="me-3 text-success quantity"
-                onClick={() => count > 1 && setCount(count - 1)}
-              />
-              <span className="mx-2 fw-bold text-success">
-                {count}
-                
-              </span>
-              <FontAwesomeIcon
-                icon={faPlus}
-                className="ms-3 text-success quantity"
-                onClick={() => setCount(count + 1)}
-              />
-            </div>
-
-            <span className="me-5">
-              <p className="mb-0 text-success small fw-bold">Total Price</p>
-              <p className="small fw-medium" style={{ color: "#00cc74" }}>
-                EGP {totalPrice}
-              </p>
+          <p className="mb-1 fw-bold text-success">
+            Rate:
+            <span className="ms-2 text-warning">
+              <FontAwesomeIcon icon={faStar} />
+              <span className="ms-1">{item?.product?.ratingsAverage}</span>
             </span>
+          </p>
 
-            <motion.div
-              whileHover={{
-                rotate: 90,
-                backgroundColor: "#f8d7da", // خلفية خفيفة حوالين الدايرة
-              }}
-              transition={{ duration: 0.3 }}
-              className="rounded-circle d-flex justify-content-center align-items-center"
-              style={{
-                width: "40px",
-                height: "40px",
-                backgroundColor: "#f0f0f0",
-                cursor: "pointer",
-              }}
-            >
-              <MotionIcon
-                icon={faRemove}
-                onClick={() => {
-                  removeProductFromCart(item.product._id);
-                }}
-                style={{ color: "#6c757d", fontSize: "16px" }}
-                whileHover={{ color: "#dc3545" }}
-                transition={{ duration: 0.3 }}
-              />
-            </motion.div>
+          <p className="fw-bold text-success mb-1">
+            Price:
+            <span className="ms-2 text-success">EGP {item?.price}</span>
+          </p>
+
+          <p className="text-secondary mb-0">
+            {item?.product?.category?.name} | {item?.product?.brand?.name} |
+            <span className="text-success fw-medium ms-1">Available</span>
+          </p>
+        </div>
+
+        <div className="d-flex flex-column flex-md-row align-items-center gap-3 gap-md-4">
+
+          <div className="border rounded-4 px-3 py-2 d-flex align-items-center">
+            <FontAwesomeIcon
+              icon={faMinus}
+              className="me-3 text-success quantity-btn"
+              onClick={() => count > 1 && setCount(count - 1)}
+            />
+            <span className="fw-bold text-success">{count}</span>
+            <FontAwesomeIcon
+              icon={faPlus}
+              className="ms-3 text-success quantity-btn"
+              onClick={() => setCount(count + 1)}
+            />
           </div>
+
+          <div className="text-center text-md-start">
+            <p className="mb-0 small fw-bold text-success">Total Price</p>
+            <p className="mb-0 fw-medium text-success">EGP {totalPrice}</p>
+          </div>
+
+          <motion.div
+            whileHover={{ rotate: 90, backgroundColor: "#f8d7da" }}
+            transition={{ duration: 0.3 }}
+            className="remove-btn d-flex justify-content-center align-items-center"
+            onClick={() => removeProductFromCart(item.product._id)}
+          >
+            <MotionIcon icon={faRemove} whileHover={{ color: "#dc3545" }} />
+          </motion.div>
         </div>
       </div>
 
-      <hr
-        className="mx-auto"
-        style={{ borderColor: "rgb(107, 114, 128)", width: "900px" }}
-      />
+      <hr className="cart-divider" />
     </div>
   );
 }

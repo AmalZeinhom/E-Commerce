@@ -27,7 +27,7 @@ export default function Brands() {
   return (
     <>
       <hr className="mt-4" />
-      <p className="text-center title">Shop by Category</p>
+      <p className="text-center title">Shop by Brands</p>
       <hr />
 
       <div className="container">
@@ -36,9 +36,9 @@ export default function Brands() {
         ) : (
           <div>
             <BackButton/>
-            <div className="row">
+            <div className="row mt-5">
           {brands.map((brand) => (
-            <div className="col-md-2 col-sm-4 mb-3">
+            <div className="col-md-2 col-6 mb-3">
               <div
                 key={brand._id}
                 className="circle-card d-flex justify-content-center align-items-center bg-light shadow"
