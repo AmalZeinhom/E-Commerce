@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   faStar,
   faEye,
@@ -9,10 +9,14 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { CartContext } from "../Context/CartContextSeperate.jsx";
 import { WishListContext } from "../Context/WighListContextSeperate.jsx";
+import { AuthContext } from "../Context/AuthContextSeperate.jsx";
+import toast from "react-hot-toast";
 
 export default function Card({ product }) {
   let { addProductsToCart } = useContext(CartContext);
   let { addProductToWishList } = useContext(WishListContext);
+  let { token } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   return (
     <>
@@ -27,7 +31,8 @@ export default function Card({ product }) {
             %<span>Sale</span>
           </div>
         )}
-        <header className="position-relative">
+
+        <header className="position-relative overflow-hidden">
           <img
             src={product.imageCover}
             className="card-img-top"
@@ -35,18 +40,30 @@ export default function Card({ product }) {
             style={{ height: "250px", objectFit: "cover" }}
           />
 
-          <div className="layer position-absolute d-flex justify-content-center align-items-center  gap-4">
+          <div className="layer position-absolute">
             <NavLink
               className="icon"
-              onClick={() => {
-                addProductToWishList(product);
+              onClick={(e) => {
+                e.preventDefault();
+                if (!token) {
+                  toast.error("Please login to add favorites");
+                  navigate("/login");
+                  return;
+                }
+                addProductToWishList(product._id);
               }}
             >
               <FontAwesomeIcon icon={faHeart} style={{ color: "white" }} />
             </NavLink>
             <NavLink
               className="icon"
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault();
+                if (!token) {
+                  toast.error("Please login to add items to cart");
+                  navigate("/login");
+                  return;
+                }
                 addProductsToCart(product._id);
               }}
             >
@@ -60,6 +77,7 @@ export default function Card({ product }) {
             </NavLink>
           </div>
         </header>
+
         <div className="card-body d-flex justify-content-between mt-2 flex-column">
           <div>
             <p className="card-title">

@@ -20,7 +20,6 @@ export default function AuthContextProvider({ children }) {
       if (data?.decoded?.id) {
         localStorage.setItem("userId", data.decoded.id);
         setUserId(data.decoded.id);
-        // console.log("Verified user ID:", data.decoded.id);
       }
     } catch (error) {
       console.log(error);

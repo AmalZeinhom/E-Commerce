@@ -13,11 +13,12 @@ import {
   faShoppingCart,
   faHeartCirclePlus,
 } from "@fortawesome/free-solid-svg-icons";
-import { motion } from "framer-motion";
+import { motion as Motion } from "framer-motion";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import { CartContext } from "../Context/CartContextSeperate.jsx";
 import { AuthContext } from "../Context/AuthContextSeperate.jsx";
 import { WishListContext } from "../Context/WighListContextSeperate.jsx";
+import toast from "react-hot-toast";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -39,13 +40,17 @@ export default function Navbar() {
   return (
     <nav className="fixed-top navbar navbar-expand-lg custom-navbar">
       <div className="container">
-        <NavLink
-          className="navbar-brand text-nowrap"
-          onClick={() => navigate("/")}
-        >
-          <FontAwesomeIcon icon={faOpencart} className="me-2" />
-          <span>FreshCart</span>
-        </NavLink>
+        <div className="d-flex align-items-center gap-2">
+          <NavLink
+            className="navbar-brand text-nowrap"
+            onClick={() => navigate("/")}
+          >
+            <FontAwesomeIcon icon={faOpencart} className="me-2" />
+            <span>FreshCart</span>
+          </NavLink>
+
+          
+        </div>
         <button
           className="navbar-toggler"
           type="button"
@@ -96,59 +101,77 @@ export default function Navbar() {
 
           {/* Social Media */}
           <ul className="navbar-nav mb-2 mb-lg-0">
-            {token ? (
-              <>
-                <li className="nav-item">
-                  <NavLink className="nav-link" to={"/wishlist"}>
-                    <motion.div
-                      whileHover={{ rotate: [0, -10, 10, -10, 0] }}
-                      style={{
-                        display: "inline-block",
-                        color: "#00cc74",
-                        transformOrigin: "bottom center",
-                      }}
-                      animate={{
-                        rotate: [0, -10, 10, -10, 0], // الدوران بالدرجات
-                      }}
-                      transition={{
-                        duration: 0.5,
-                        ease: "easeInOut",
-                      }}
-                    >
-                      <FontAwesomeIcon
-                        icon={
-                          !wishList?.data?.length ? faHeart : faHeartCirclePlus
-                        }
-                        className="me-2"
-                        color="green"
-                      />
-                    </motion.div>
-                  </NavLink>
-                </li>
-
-                <li className="nav-item position-relative">
-                  <NavLink className="nav-link" to={"/cart"}>
+            <>
+              <li className="nav-item">
+                <NavLink
+                  className="nav-link"
+                  to={"/wishlist"}
+                  onClick={(e) => {
+                    if (!token) {
+                      e.preventDefault();
+                      toast.error("Please login to view favorites");
+                      navigate("/login");
+                    }
+                  }}
+                >
+                  <Motion.div
+                    whileHover={{ rotate: [0, -10, 10, -10, 0] }}
+                    style={{
+                      display: "inline-block",
+                      color: "#00cc74",
+                      transformOrigin: "bottom center",
+                    }}
+                    animate={{
+                      rotate: [0, -10, 10, -10, 0],
+                    }}
+                    transition={{
+                      duration: 0.5,
+                      ease: "easeInOut",
+                    }}
+                  >
                     <FontAwesomeIcon
-                      icon={faShoppingCart}
+                      icon={
+                        !wishList?.data?.length ? faHeart : faHeartCirclePlus
+                      }
                       className="me-2"
                       color="green"
                     />
-                  </NavLink>
-                  <div
-                    className="cart-number top-0 start-0 text-white rounded-5 fw-bold d-flex justify-content-center align-items-center position-absolute"
-                    style={{
-                      width: "20px",
-                      height: "20px",
-                      fontSize: "12px",
-                      backgroundColor: "#00cc74",
-                      display: counter >= 0 ? "flex" : "none",
-                    }}
-                  >
-                    {counter}
-                  </div>
-                </li>
-              </>
-            ) : null}
+                  </Motion.div>
+                </NavLink>
+              </li>
+
+              <li className="nav-item position-relative">
+                <NavLink
+                  className="nav-link"
+                  to={"/cart"}
+                  onClick={(e) => {
+                    if (!token) {
+                      e.preventDefault();
+                      toast.error("Please login to view your cart");
+                      navigate("/login");
+                    }
+                  }}
+                >
+                  <FontAwesomeIcon
+                    icon={faShoppingCart}
+                    className="me-2"
+                    color="green"
+                  />
+                </NavLink>
+                <div
+                  className="cart-number top-0 start-0 text-white rounded-5 fw-bold d-flex justify-content-center align-items-center position-absolute"
+                  style={{
+                    width: "20px",
+                    height: "20px",
+                    fontSize: "12px",
+                    backgroundColor: "#00cc74",
+                    display: counter >= 0 ? "flex" : "none",
+                  }}
+                >
+                  {counter}
+                </div>
+              </li>
+            </>
 
             <li className="nav-item">
               <NavLink className="nav-link" to="#">

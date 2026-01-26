@@ -14,16 +14,21 @@ import { Autoplay } from "swiper/modules";
 import { WishListContext } from "../Context/WighListContextSeperate.jsx";
 import BackButton from "../Components/BackButton";
 import { CartContext } from "../Context/CartContextSeperate.jsx";
+import { AuthContext } from "../Context/AuthContextSeperate.jsx";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 export default function ProductDetails() {
   //id is the dynamic variable in the productDetails route on App.jsx
   let { id } = useParams();
   let [product, setProducts] = useState(null);
   let [currentIndex, setCurrentIndex] = useState(0);
-  let [ setLoading] = useState(false);
+  let [loading, setLoading] = useState(false);
   let { wishList } = useContext(WishListContext);
   let { addProductToWishList } = useContext(WishListContext);
   let { addProductsToCart } = useContext(CartContext);
+  let { token } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   async function getProductDetails() {
     setLoading(true);
@@ -42,7 +47,8 @@ export default function ProductDetails() {
 
   useEffect(() => {
     getProductDetails();
-  });
+  }, [id]);
+  
 
   useEffect(() => {
     if (!product || !product.images) return;
@@ -58,7 +64,7 @@ export default function ProductDetails() {
 
   // if (!product) return <div className="text-center py-5">Loading...</div>;
 
-  if (!product) {
+  if (loading || !product) {
     return <Loader />;
   }
   return (
@@ -177,8 +183,14 @@ export default function ProductDetails() {
             <NavLink
               className="btn btn-fav"
               to={"/wishlist"}
-              onClick={() => {
-                addProductToWishList(product);
+              onClick={(e) => {
+                e.preventDefault();
+                if (!token) {
+                  toast.error("Please login to add favorites");
+                  navigate("/login");
+                  return;
+                }
+                addProductToWishList(product._id);
               }}
             >
               <FontAwesomeIcon
@@ -188,7 +200,12 @@ export default function ProductDetails() {
             </NavLink>
             <button
               onClick={() => {
-                addProductsToCart(product);
+                if (!token) {
+                  toast.error("Please login to add items to cart");
+                  navigate("/login");
+                  return;
+                }
+                addProductsToCart(product._id);
               }}
               className="btn btn-add text-white fw-bold w-100"
             >

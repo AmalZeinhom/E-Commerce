@@ -21,35 +21,36 @@ export default function Home() {
   const swiperWrappedRef = useRef(null);
   let [categories, setCategories] = useState([]);
   let [loading, setLoading] = useState(false);
- 
-
 
   async function shopByCategory() {
     setLoading(true);
-    let { data } = await axios(
-      "https://ecommerce.routemisr.com/api/v1/categories"
-    );
-    setCategories(data.data);
-    console.log(data.data);
 
-    setLoading(false);
-    // toast.success(`Welcome Back ${response.data.name}`);
+    try {
+      const { data } = await axios.get(
+        "https://ecommerce.routemisr.com/api/v1/categories"
+      );
+      setCategories(data.data);
+    } catch (error) {
+      console.log("Categories Error: ", error);
+      toast.error("Failed to load categories. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
     shopByCategory();
 
-     const userName = localStorage.getItem("userName");
+    const userName = localStorage.getItem("userName");
     const isFirstLogin = localStorage.getItem("isFirstLogin");
-    
-    if (userName && isFirstLogin === "true") {
-    toast.success(`Welcome, ${userName}! 👋`, {
-      duration: 4000,
-    });
-    localStorage.removeItem("isFirstLogin"); 
-  }
-  }, []);
 
+    if (userName && isFirstLogin === "true") {
+      toast.success(`Welcome, ${userName}! 👋`, {
+        duration: 4000,
+      });
+      localStorage.removeItem("isFirstLogin");
+    }
+  }, []);
 
   const slideData = [{ imgSrc: main1 }, { imgSrc: main2 }, { imgSrc: main3 }];
 
@@ -103,7 +104,6 @@ export default function Home() {
                   className="position-relative"
                   style={{ width: "100%", height: "500px", overflow: "hidden" }}
                 >
-                  {" "}
                   <Swiper
                     className="mySwiper"
                     modules={[Pagination]}
@@ -168,11 +168,16 @@ export default function Home() {
           <h2 className="cat-title"> Shop Now By Popular Categories </h2>
           <Swiper
             modules={[Navigation]}
-            slidesPerView={6}
-            spaceBetween={5}
+            spaceBetween={15}
             navigation
             loop
             breakpoints={{
+              0: {
+                slidesPerView: 1.5
+              },
+              576: {
+                slidesPerView: 2
+              },
               768: {
                 slidesPerView: 3,
               },
@@ -204,7 +209,7 @@ export default function Home() {
           </Swiper>
         </div>
 
-        <div className="shop-by-product" id="products-section">
+        <div>
           <h3 className="text-center fw-bolder shop-title">
             Shop Now By Popular Products
           </h3>

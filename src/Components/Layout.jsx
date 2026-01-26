@@ -48,7 +48,7 @@ export default function Layout() {
 
         <Navbar setShowFilters={setShowFilters} showFilters={showFilters}/>
 
-        <main className="py-5 main-content">
+        <main className="py-5 main-content min-vh-100">
           <div className="container"> 
             <Outlet context={{ showFilters, setShowFilters }}/>
           </div>

@@ -10,33 +10,34 @@ import Checkout from "../SubPages/Checkout";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import BackButton from "../Components/BackButton";
+import { motion } from "framer-motion";
 
 export default function Cart() {
   let { cart, getLoggedUserCart, clearCart, loading } = useContext(CartContext);
   const isCartEmpty = cart?.data?.products?.length === 0;
-  const totalPrice = cart?.data?.products.reduce((acc, item) => {
-    return acc + item.price * item.count; 
-  }, 0);
+  const totalPrice =
+    cart?.data?.products.reduce((acc, item) => {
+      return acc + item.price * item.count;
+    }, 0) || 0;
   const checkOut = useRef(null);
 
   const scrollToCheckOut = () => {
-  checkOut.current?.scrollIntoView({ behavior: "smooth" });
-};
-
+    checkOut.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   useEffect(() => {
     getLoggedUserCart();
-  });
+  }, []);
 
   useEffect(() => {
-  console.log(cart?.data?.products);
-}, [cart]);
+    console.log(cart?.data?.products);
+  }, [cart]);
 
   return (
     <div className="container py-5 cart-bg my-5 rounded-5">
       <header className="d-flex justify-content-between align-items-center px-5 mb-5">
         <span className="d-flex align-items-center gap-3">
-          <BackButton/>
+          <BackButton />
           <h4 className="fw-bold" style={{ color: "rgb(1, 133, 76)" }}>
             Shop Cart
           </h4>
@@ -80,39 +81,41 @@ export default function Cart() {
       ) : (
         <>
           {cart?.data?.products?.map((item) => (
-            <CartItems item={item} />
+            <CartItems key={item.product._id} item={item} />
           ))}
         </>
       )}
 
       {!isCartEmpty && !loading && (
         <div className="d-flex justify-content-end me-5 ">
-        <button
-          className="btn btn-danger text-white fs-6 fw-bold mt-5 d-flex align-items-center gap-2"
-          onClick={clearCart}
-        >
-          <motion.div
-            whileHover={{
-              x: [0, -4, 4, -4, 4, 0],
-            }}
-            transition={{
-              duration: 0.5,
-              ease: easeInOut,
-            }}
-            className="rounded-circle d-flex justify-content-center align-items-center"
-            style={{
-              width: "20px",
-              height: "20px",
-            }}
+          <button
+            className="btn btn-danger text-white fs-6 fw-bold mt-5 d-flex align-items-center gap-2"
+            onClick={clearCart}
           >
-            <FontAwesomeIcon icon={faTrashCan} />
-          </motion.div>
-          Clear All Products
-        </button>
-      </div>
+            <motion.div
+              whileHover={{
+                x: [0, -4, 4, -4, 4, 0],
+              }}
+              transition={{
+                duration: 0.5,
+                ease: easeInOut,
+              }}
+              className="rounded-circle d-flex justify-content-center align-items-center"
+              style={{
+                width: "20px",
+                height: "20px",
+              }}
+            >
+              <FontAwesomeIcon icon={faTrashCan} />
+            </motion.div>
+            Clear All Products
+          </button>
+        </div>
       )}
 
-      {!isCartEmpty && <Checkout ref = {checkOut} totalPrice = {cart?.data?.totalCartPrice}/>}
-    </div>    
+      {!isCartEmpty && (
+        <Checkout ref={checkOut} totalPrice={cart?.data?.totalCartPrice} />
+      )}
+    </div>
   );
 }

@@ -2,7 +2,8 @@
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { CartContext } from "./CartContextSeperate.jsx"; 
+import { CartContext } from "./CartContextSeperate.jsx";
+import { AuthContext } from "./AuthContextSeperate.jsx";
 
 export default function CartContextProvider({ children }) {
   const [cart, setCart] = useState(null);
@@ -10,13 +11,19 @@ export default function CartContextProvider({ children }) {
   const [lastOrder, setLastOrder] = useState(null);
 
   async function getLoggedUserCart() {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setLoading(false);
+      setCart(null);
+      return;
+    }
     setLoading(true);
     try {
       const { data } = await axios.get(
         "https://ecommerce.routemisr.com/api/v1/cart",
         {
           headers: {
-            token: localStorage.getItem("token"),
+            token: token,
           },
         }
       );
@@ -29,6 +36,11 @@ export default function CartContextProvider({ children }) {
   }
 
   async function addProductsToCart(productId) {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("Please login to add items to cart");
+      return;
+    }
     const loadingToast = toast.loading("Loading..", {
       iconTheme: { primary: "#00cc74", secondary: "#fff" },
     });
@@ -37,7 +49,7 @@ export default function CartContextProvider({ children }) {
         "https://ecommerce.routemisr.com/api/v1/cart",
         { productId },
         {
-          headers: { token: localStorage.getItem("token") },
+          headers: { token: token },
         }
       );
       setCart(data);
@@ -50,6 +62,11 @@ export default function CartContextProvider({ children }) {
   }
 
   async function removeProductFromCart(cartItemId) {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("Please login first");
+      return;
+    }
     const loadingToast = toast.loading("Loading..", {
       iconTheme: { primary: "#00cc74", secondary: "#fff" },
     });
@@ -57,7 +74,7 @@ export default function CartContextProvider({ children }) {
       const { data } = await axios.delete(
         `https://ecommerce.routemisr.com/api/v1/cart/${cartItemId}`,
         {
-          headers: { token: localStorage.getItem("token") },
+          headers: { token: token },
         }
       );
       setCart(data);
@@ -70,6 +87,11 @@ export default function CartContextProvider({ children }) {
   }
 
   async function clearCart() {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("Please login first");
+      return;
+    }
     const loadingToast = toast.loading("Loading..", {
       iconTheme: { primary: "#00cc74", secondary: "#fff" },
     });
@@ -77,7 +99,7 @@ export default function CartContextProvider({ children }) {
       const { data } = await axios.delete(
         "https://ecommerce.routemisr.com/api/v1/cart",
         {
-          headers: { token: localStorage.getItem("token") },
+          headers: { token: token },
         }
       );
       setCart(data);

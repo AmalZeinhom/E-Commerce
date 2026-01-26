@@ -19,62 +19,64 @@ export default function Footer() {
           </p>
 
           <form>
-            <div className="d-flex gap-2">
+            <div className="d-flex flex-column flex-sm-row gap-2">
               <input
                 type="email"
-                className="form-control custom-input w-75"
+                className="form-control custom-input flex-grow-1"
                 placeholder="Email.."
                 aria-label="email"
                 aria-describedby="addon-wrapping"
               />
               <button
                 type="reset"
-                className="btn btn-bg text-white fw-bold w-25"
+                className="btn btn-bg text-white fw-bold mt-2 mt-sm-0 px-4"
               >
                 Share App Link
               </button>
             </div>
-            
           </form>
         </div>
 
-        <hr className="my-4 border-top border-secondary opacity-25"/>
+        <hr className="my-4 border-top border-secondary opacity-25" />
 
         {/* Clients */}
         <div className="d-flex flex-md-row align-items-start justify-content-between gap-3 mt-4">
           {/* Payment Partners*/}
-            <div className="d-flex align-items-center gap-3 flex-wrap">
-              <p className="navbar-brand fs-6 fw-normal m-0">Payment Partners</p>
-              <img
-                src={amazonPay}
-                alt="Amazon Pay"
-                style={{ height: "15px" }}
-              />
-              <img
-                src={americanExpress}
-                alt="American Express"
-                style={{ height: "30px" }}
-              />
-              <img
-                src={masterCard}
-                alt="Master Card"
-                style={{ height: "30px" }}
-              />
-              <img src={payPal} alt="payPal" style={{ height: "30px" }} />
-            </div>
+          <div className="d-flex align-items-center gap-3 flex-wrap">
+            <p className="navbar-brand fs-6 fw-normal m-0">Payment Partners</p>
+            <img src={amazonPay} alt="Amazon Pay" style={{ height: "15px" }} />
+            <img
+              src={americanExpress}
+              alt="American Express"
+              style={{ height: "30px" }}
+            />
+            <img
+              src={masterCard}
+              alt="Master Card"
+              style={{ height: "30px" }}
+            />
+            <img src={payPal} alt="payPal" style={{ height: "30px" }} />
+          </div>
 
-            {/* App Stores */}
-            <div className="d-flex align-items-center gap-3 flex-wrap">
-              <p className="navbar-brand fs-6 fw-normal m-0">Get Delivers with FreshCart</p>
-              <img src={appleStore} alt="Apple Store" style={{height: "30px"}}/>
-              <img src={googlePlay} alt="Google Play" style={{height: "35px"}}/>
-            </div>
+          {/* App Stores */}
+          <div className="d-flex align-items-center gap-3 flex-wrap">
+            <p className="navbar-brand fs-6 fw-normal m-0">
+              Get Delivers with FreshCart
+            </p>
+            <img
+              src={appleStore}
+              alt="Apple Store"
+              style={{ height: "30px" }}
+            />
+            <img
+              src={googlePlay}
+              alt="Google Play"
+              style={{ height: "35px" }}
+            />
+          </div>
         </div>
 
-        <hr className="my-4 border-top border-secondary opacity-25"/>
-
-
-        
+        <hr className="my-4 border-top border-secondary opacity-25" />
       </div>
     </footer>
   );

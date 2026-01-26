@@ -35,36 +35,20 @@ export default function App() {
       children: [
         {
           index: true,
-          element: (
-            <ProtectedRoutes>
-              <Home />
-            </ProtectedRoutes>
-          ),
+          element: <Home />,
         },
         {
           path: "/products",
-          element: (
-            <ProtectedRoutes>
-              <Products />
-            </ProtectedRoutes>
-          ),
+          element: <Products />,
         },
         {
           path: "/categories",
-          element: (
-            <ProtectedRoutes>
-              <Categories />
-            </ProtectedRoutes>
-          ),
+          element: <Categories />,
           children: [{ path: "subCategory", element: <SubCategory /> }],
         },
         {
           path: "/brands",
-          element: (
-            <ProtectedRoutes>
-              <Brands />
-            </ProtectedRoutes>
-          ),
+          element: <Brands />,
           children: [{ path: "subBrands", element: <SubBrands /> }],
         },
         {
@@ -93,11 +77,7 @@ export default function App() {
         },
         {
           path: "productDetails/:id",
-          element: (
-            <ProtectedRoutes>
-              <ProductDetails />
-            </ProtectedRoutes>
-          ),
+          element: <ProductDetails />,
         },
         {
           path: "/login",

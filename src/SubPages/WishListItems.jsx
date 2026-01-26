@@ -9,11 +9,14 @@ import {
 import { CartContext } from "../Context/CartContextSeperate.jsx";
 import { WishListContext } from "../Context/WighListContextSeperate.jsx";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../Context/AuthContextSeperate.jsx";
+import toast from "react-hot-toast";
 
-export default function WishListItems({item}) {
-    const { loading } = useContext(CartContext);
-    let { removeItemFromWishList } = useContext(WishListContext);
-    const navigate = useNavigate()
+export default function WishListItems({ item }) {
+  const { loading, addProductsToCart } = useContext(CartContext);
+  let { removeItemFromWishList } = useContext(WishListContext);
+  const navigate = useNavigate();
+  const { token } = useContext(AuthContext);
 
   return (
     <div
@@ -73,21 +76,30 @@ export default function WishListItems({item}) {
       </div>
 
       <div className="control d-flex justify-content-center align-items-center gap-3 me-5 col-md-4">
-        <div className="btn rounded-5 btn-success d-flex align-items-center gap-2 px-4">
+        <div
+          className="btn rounded-5 btn-success d-flex align-items-center gap-2 px-4"
+          onClick={() => {
+            if (!token) {
+              toast.error("Please login to add items to cart");
+              navigate("/login");
+              return;
+            }
+            addProductsToCart(item._id);
+          }}
+        >
           <FontAwesomeIcon icon={faCartPlus} />
           Add To Cart
         </div>
         <div
           className="btn rounded-5 btn-danger d-flex align-items-center gap-2 px-4"
-          onClick={() => {removeItemFromWishList(item._id)}}
+          onClick={() => {
+            removeItemFromWishList(item._id);
+          }}
         >
           <FontAwesomeIcon icon={faTrashCan} />
           Remove
         </div>
       </div>
-
-      
     </div>
-    
   );
 }

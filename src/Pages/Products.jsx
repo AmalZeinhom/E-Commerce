@@ -1,9 +1,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import filterIcon from "../assets/filter.png";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
-  faArrowLeft,
   faSearch,
   faSyncAlt,
 } from "@fortawesome/free-solid-svg-icons";
@@ -12,9 +11,8 @@ import {
   useOutletContext,
   useSearchParams,
 } from "react-router-dom";
-import NotFound from "./NotFound";
 import Card from "../Components/Card";
-import Loader from "../Components/Loader";
+import BackButton from "../Components/BackButton";
 
 export default function Products({ hideExtras = false }) {
   const [input, setInput] = useState("");
@@ -26,17 +24,15 @@ export default function Products({ hideExtras = false }) {
   const [brands, setBrands] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedBrands, setSelectedBrands] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState(null);
 
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const categoryId = searchParams.get("id");
 
+  /* ===================== PRODUCTS ===================== */
   async function getAllProducts(page = 1) {
-    setLoading(true);
     let url = `https://ecommerce.routemisr.com/api/v1/products?page=${page}`;
-
     if (categoryId) {
       url += `&category[in]=${categoryId}`;
     }
@@ -46,15 +42,16 @@ export default function Products({ hideExtras = false }) {
       setProducts(data.data || []);
       setPagination(data.metadata || null);
     } catch (error) {
-      console.error("Error fetching products:", error);
-    } finally {
-      setLoading(false);
+      console.error(error);
     }
   }
 
   useEffect(() => {
     getAllProducts();
+  }, [categoryId]);
 
+  /* ===================== CATEGORIES & BRANDS ===================== */
+  useEffect(() => {
     axios
       .get("https://ecommerce.routemisr.com/api/v1/categories")
       .then((res) => {
@@ -68,26 +65,35 @@ export default function Products({ hideExtras = false }) {
       const allowed = ["Canon", "Dell", "DeFacto", "Puma"];
       setBrands(res.data.data.filter((brand) => allowed.includes(brand.name)));
     });
-  }, [categoryId]);
+  }, []);
 
-  const filteredProducts = products.filter((product) => {
-    const matchesSearch = product.title
-      .toLowerCase()
-      .includes(input.toLowerCase());
-    const matchesCategory =
-      !selectedCategories.length ||
-      selectedCategories.includes(product.category._id);
-    const matchesBrand =
-      !selectedBrands.length || selectedBrands.includes(product.brand._id);
-    const matchesPrice = price === 0 || product.price <= price;
-    return matchesSearch && matchesCategory && matchesBrand && matchesPrice;
-  });
+  /* ===================== FILTERING ===================== */
+  const filteredProducts = useMemo(() => {
+    return products.filter((product) => {
+      const matchesSearch = product.title
+        .toLowerCase()
+        .includes(input.toLowerCase());
 
-  const sortedProducts = [...filteredProducts].sort((a, b) => {
-    if (sortOrders === "low") return a.price - b.price;
-    if (sortOrders === "high") return b.price - a.price;
-    return 0;
-  });
+      const matchesCategory =
+        !selectedCategories.length ||
+        selectedCategories.includes(product.category._id);
+
+      const matchesBrand =
+        !selectedBrands.length || selectedBrands.includes(product.brand._id);
+
+      const matchesPrice = price === 0 || product.price <= price;
+
+      return matchesSearch && matchesCategory && matchesBrand && matchesPrice;
+    });
+  }, [products, input, selectedCategories, selectedBrands, price]);
+
+  const sortedProducts = useMemo(() => {
+    if (sortOrders === "low")
+      return [...filteredProducts].sort((a, b) => a.price - b.price);
+    if (sortOrders === "high")
+      return [...filteredProducts].sort((a, b) => b.price - a.price);
+    return filteredProducts;
+  }, [filteredProducts, sortOrders]);
 
   function handleResetFilters() {
     setPrice(0);
@@ -95,121 +101,91 @@ export default function Products({ hideExtras = false }) {
     setSelectedBrands([]);
     setSelectedCategories([]);
     setSortOrders("");
+    // close the drawer when resetting filters
+    setShowFilters(false);
   }
 
-  if (loading) return <Loader />;
-
   return (
-    <section className="container products-container py-5 my-5">
-      {!hideExtras && (
-        <div>
-          {/* Search Section */}
-          <div className="d-flex justify-content-between align-items-center searchComponent w-50 p-2 rounded shadow-sm bg-white">
-            <button
-              className="btn rounded-circle shadow-lg back-icon"
-              onClick={() => navigate("/")}
-            >
-              <FontAwesomeIcon icon={faArrowLeft} />
-            </button>
+    <section className="products-page py-5">
+      <div className="container">
+        {!hideExtras && (
+          <>
+            {/* ================= SEARCH BAR ================= */}
+            <div className="search-wrapper">
+              <button className="btn icon-btn" onClick={() => navigate("/")}>
+                <BackButton/>
+              </button>
 
-            <div className="search-container position-relative flex-grow-1 mx-3">
-              <input
-                type="text"
-                id="searchInput"
-                className="form-control rounded-pill ps-4 shadow-sm"
-                placeholder="Search for amazing products..."
-                aria-label="Search"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-              />
-              <FontAwesomeIcon
-                icon={faSearch}
-                className="search-icon position-absolute top-50 end-0 translate-middle-y me-3 text-muted"
-              />
+              <div className="search-box">
+                <input
+                  className="form-control"
+                  placeholder="Search products..."
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                />
+                <FontAwesomeIcon icon={faSearch} />
+              </div>
+
+              <button
+                className="btn icon-btn filter-btn"
+                onClick={() => setShowFilters(true)}
+              >
+                <img src={filterIcon} alt="filter" />
+              </button>
             </div>
 
-            <button
-              className="btn back-icon rounded-circle shadow-sm filter-btn"
-              onClick={() => setShowFilters((prev) => !prev)}
-              style={{ width: "40px", height: "40px" }}
-            >
-              <img
-                src={filterIcon}
-                alt="filter icon"
-                style={{ height: "20px" }}
+            {/* ================= OVERLAY ================= */}
+            {showFilters && (
+              <div
+                className="filter-overlay"
+                onClick={() => setShowFilters(false)}
               />
-            </button>
-          </div>
+            )}
 
-          {/* Side Navbar */}
-          <div
-            className={`position-fixed py-0 px-5 top-0 start-0 bg-success text-white bg-opacity-75 sideNavbar shadow-lg ${
-              showFilters ? "open" : ""
-            }`}
-            style={{
-              width: "300px",
-              height: "100vh",
-              zIndex: "10000",
-              borderTopRightRadius: "1rem",
-              borderBottomRightRadius: "1rem",
-            }}
-          >
-            {/* Sort */}
-            <div className="sort">
-              <p className="fw-medium fs-6 mb-0 pt-4">Price:</p>
+            {/* ================= FILTER DRAWER ================= */}
+            <aside className={`filters-drawer ${showFilters ? "open" : ""}`}>
+              <div className="filters-header">
+                <h5>Filters</h5>
+                <button onClick={() => setShowFilters(false)}>✕</button>
+              </div>
+
+              <hr />
+
+              <p className="fw-bold">Sort by Price</p>
               {["low", "high"].map((order) => (
-                <div className="form-check" key={order}>
+                <label key={order} className="d-block">
                   <input
-                    className="form-check-input"
                     type="radio"
-                    name="priceSort"
-                    value={order}
+                    name="sortOrder"
                     checked={sortOrders === order}
-                    onChange={(e) => setSortOrders(e.target.value)}
+                    onChange={() => setSortOrders(order)}
                   />
-                  <label className="form-check-label">
-                    {order === "low"
-                      ? "smaller to Bigger"
-                      : "Bigger to smaller"}
-                  </label>
-                </div>
+                  {order === "low" ? " Low → High" : " High → Low"}
+                </label>
               ))}
-              <hr style={{ width: "80%" }} />
-            </div>
 
-            {/* Price Filter */}
-            <div className="filter">
-              <p className="fw-bold fs-4">
-                {" "}
-                Filter
-                {/* <hr style={{width: "50%"}}/> */}
-              </p>
-              <label className="form-label fw-bold d-block">Price Range</label>
+              <hr />
+
+              <label className="fw-bold">Max Price</label>
               <input
                 type="range"
-                className="form-range"
-                step="50"
-                value={price}
                 min="0"
                 max="5000"
-                onChange={(e) => setPrice(Number(e.target.value))}
+                step="50"
+                value={price}
+                onChange={(e) => setPrice(+e.target.value)}
               />
-              <div className="price-value bg-success text-white shadow-lg">
-                Max Price:
-                <span className="fw-bold"> EGP {price}</span>
-              </div>
-              <hr style={{ width: "80%" }} />
-            </div>
+              <p>EGP {price}</p>
 
-            {/* Categories */}
-            <div className="checkLists">
-              <h6 className="fw-bold">Filter by Category:</h6>
-              {categories.map((category) => (
-                <div key={category._id} className="form-check">
+              <hr />
+
+              <h6>Categories</h6>
+              {categories.map((cat) => (
+                <label key={cat._id} className="d-block">
                   <input
-                    className="form-check-input"
                     type="checkbox"
-                    value={category._id}
+                    value={cat._id}
+                    checked={selectedCategories.includes(cat._id)}
                     onChange={(e) => {
                       const id = e.target.value;
                       setSelectedCategories((prev) =>
@@ -219,21 +195,19 @@ export default function Products({ hideExtras = false }) {
                       );
                     }}
                   />
-                  <label className="form-check-label">{category.name}</label>
-                </div>
+                  {cat.name}
+                </label>
               ))}
-              <hr style={{ width: "80%" }} />
-            </div>
 
-            {/* Brands */}
-            <div className="checkLists">
-              <h6 className="fw-bold">Filter by Brand:</h6>
+              <hr />
+
+              <h6>Brands</h6>
               {brands.map((brand) => (
-                <div key={brand._id} className="form-check">
+                <label key={brand._id} className="d-block">
                   <input
-                    className="form-check-input"
                     type="checkbox"
                     value={brand._id}
+                    checked={selectedBrands.includes(brand._id)}
                     onChange={(e) => {
                       const id = e.target.value;
                       setSelectedBrands((prev) =>
@@ -243,55 +217,52 @@ export default function Products({ hideExtras = false }) {
                       );
                     }}
                   />
-                  <label className="form-check-label">{brand.name}</label>
-                </div>
+                  {brand.name}
+                </label>
               ))}
-            </div>
 
-            <div>
               <button
-                className="btn reset-btn position-absolute"
-                style={{
-                  borderRadius: "50%",
-                  border: "5px rgb(1, 133, 76) solid",
-                  backgroundColor: "rgb(1, 133, 76)",
-                }}
+                className="btn btn-light w-100 mt-3"
                 onClick={handleResetFilters}
               >
-                <FontAwesomeIcon icon={faSyncAlt} style={{ color: "white" }} />
+                <FontAwesomeIcon icon={faSyncAlt} /> Reset
               </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Products List */}
-      <div className="row g-4 product-container">
-        {sortedProducts.length === 0 ? (
-          <NotFound />
-        ) : (
-          sortedProducts.map((product) => (
-            <div key={product.id} className="col-md-3">
-              <Card product={product} />
-            </div>
-          ))
+            </aside>
+          </>
         )}
+
+        {/* ================= PRODUCTS ================= */}
+        <div className="row g-4 mt-4 product-container">
+          {sortedProducts.length === 0 ? (
+            <div className="col-12 text-center py-5 text-muted">
+              No products match your filters.
+            </div>
+          ) : (
+            sortedProducts.map((product) => (
+              <div
+                key={product._id}
+                className="col-12 col-sm-6 col-md-4 col-lg-3"
+              >
+                <Card product={product} />
+              </div>
+            ))
+          )}
+        </div>
       </div>
 
       {/* Pagination */}
       {pagination?.numberOfPages > 1 && (
-        <div className="d-flex justify-content-center align-items-center gap-4 my-5">
-          {Array.from({ length: pagination.numberOfPages }, (_, index) => (
-            <button
-              key={index}
-              onClick={() => getAllProducts(index + 1)}
-              className={`pagination-btn ${
-                pagination.currentPage === index + 1 ? "active" : ""
-              }`}
-            >
-              {index + 1}
-            </button>
-          ))}
+        <div className="d-flex justify-content-center gap-3 my-5">
+          {Array.from(
+            {
+              length: pagination.numberOfPages,
+            },
+            (_, i) => (
+              <button key={i} onClick={() => getAllProducts(i + 1)} className= {`pagination-btn ${pagination.currentPage === i + 1 ? "active" : ""}`}>
+                {i + 1}
+              </button>
+            )
+          )}
         </div>
       )}
     </section>
