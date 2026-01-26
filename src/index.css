@@ -763,6 +763,13 @@ body {
 }
 
 /* !=====================Loading Screen====================== */
+.openCart-loader-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .icon-wrapper {
   position: relative;
   width: 120px;

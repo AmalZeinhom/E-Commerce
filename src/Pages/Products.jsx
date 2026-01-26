@@ -13,6 +13,7 @@ import {
 } from "react-router-dom";
 import Card from "../Components/Card";
 import BackButton from "../Components/BackButton";
+import Loader from "../Components/Loader";
 
 export default function Products({ hideExtras = false }) {
   const [input, setInput] = useState("");
@@ -25,6 +26,7 @@ export default function Products({ hideExtras = false }) {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedBrands, setSelectedBrands] = useState([]);
   const [pagination, setPagination] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -32,6 +34,7 @@ export default function Products({ hideExtras = false }) {
 
   /* ===================== PRODUCTS ===================== */
   async function getAllProducts(page = 1) {
+    setLoading(true);
     let url = `https://ecommerce.routemisr.com/api/v1/products?page=${page}`;
     if (categoryId) {
       url += `&category[in]=${categoryId}`;
@@ -43,6 +46,8 @@ export default function Products({ hideExtras = false }) {
       setPagination(data.metadata || null);
     } catch (error) {
       console.error(error);
+    } finally{
+      setLoading(false);
     }
   }
 
@@ -104,6 +109,14 @@ export default function Products({ hideExtras = false }) {
     // close the drawer when resetting filters
     setShowFilters(false);
   }
+
+  if (loading) {
+      return (
+        <div className="d-flex justify-content-center mt-5">
+          <Loader />
+        </div>
+      );
+    }
 
   return (
     <section className="products-page py-5">

@@ -44,7 +44,6 @@ export default function Orders() {
 
   return (
     <div className="container mt-5 orders-page">
-      {/* 🔴 MODIFIED: header wrapper for responsive */}
       <div className="orders-header d-flex align-items-center gap-3 mb-4">
         <BackButton />
         <h3 className="fw-bold text-success mb-0">Track Your Orders</h3>
@@ -66,7 +65,6 @@ export default function Orders() {
           <div key={order._id} className="order-card p-4 mb-4">
             <p className="order-title">Order #{index + 1}</p>
 
-            {/* 🔴 MODIFIED: order info becomes responsive grid */}
             <div className="order-info">
               <p>
                 Transaction:
@@ -90,7 +88,6 @@ export default function Orders() {
 
             <hr />
 
-            {/* 🔴 MODIFIED: products responsive grid */}
             <div className="row mt-4">
               {order.cartItems?.map((item) => (
                 <div key={item._id} className="col-lg-4 col-md-6 col-12 mb-4">
@@ -122,7 +119,6 @@ export default function Orders() {
               ))}
             </div>
 
-            {/* 🔴 MODIFIED: shipping info responsive */}
             <div className="shipping-box mt-3">
               <strong className="d-block mb-3">Shipping Info:</strong>
 
